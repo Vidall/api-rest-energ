@@ -30,7 +30,6 @@ export default [
         'error',
         'always'
       ],
-      '@typescript-eslint/ban-types': 'off',
       'no-multiple-empty-lines': [
         'error',
         { max: 1, maxEOF: 1, maxBOF: 0 }
