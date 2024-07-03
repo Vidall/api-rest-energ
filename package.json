@@ -1,0 +1,24 @@
+{
+  "name": "api-rest-energ",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "yarn ts-node-dev ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@types/express": "^4.17.21",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.15.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
