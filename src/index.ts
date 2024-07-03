@@ -1,5 +1,6 @@
 import { server } from './server/Server'; 
-
-server.listen(3000, () => {
-  console.log('App rodando na porta 3000');
+/*eslint-disable-next-line*/
+server.listen(process.env.PORT, () => {
+  /*eslint-disable-next-line*/
+  console.log(`App rodando na porta ${process.env.PORT}`);
 });
