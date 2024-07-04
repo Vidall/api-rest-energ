@@ -20,7 +20,7 @@ export default [
       ],
       'linebreak-style': [
         'error',
-        'unix'
+        'windows'
       ],
       'quotes': [
         'error',
