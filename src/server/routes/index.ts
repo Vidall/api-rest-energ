@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { pessoaFisicaRouters } from './clients/pessoaFisicaRoute';
+import { routers } from './clients';
 
 const router = Router();
 
@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
   res.send('Tudo ok');
 });
 
-pessoaFisicaRouters(router);
+routers.pessoaFisica(router);
+routers.pessoaJuridica(router);
 
 export { router };

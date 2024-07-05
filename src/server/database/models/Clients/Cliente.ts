@@ -25,3 +25,10 @@ export interface IUpdatePessoaFisica {
   endereco?: IEnderecoUpdate;
   telefone?: string
 }
+
+export interface IpessoaJuridica{
+  nome: string,
+  endereco: Endereco,
+  cnpj: string,
+  tipo?: 'juridico'
+}
