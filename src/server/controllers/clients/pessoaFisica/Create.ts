@@ -18,16 +18,18 @@ const bodySchema = yup.object().shape({
   telefone: yup.string().required().matches(/^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/, 'telefone inválido'),
   endereco: enderecoSchema.required(),
   cpf: yup.string().required().test('cpf', 'cpf inválido', value => cpf.isValid(value || '')),
-  tipo: yup.string().oneOf(['fisico']).required()
+  tipo: yup.string().oneOf(['fisico']).optional()
 });
 
 export const createValidation = validation((getSchema) => ({
-  body: getSchema<IPessoaFisica>(bodySchema)
+  body: getSchema<Omit<IPessoaFisica, 'tipo'>>(bodySchema)
 }));
 
 export const create = async (req: Request, res: Response) => {
 
-  const {nome} = req.body;
+  const id = 1;
+  const body = req.body;
+  const tipo = 'fisico';
 
-  return res.status(StatusCodes.OK).json(nome);
+  return res.status(StatusCodes.OK).json({id, ...body, tipo});
 };
