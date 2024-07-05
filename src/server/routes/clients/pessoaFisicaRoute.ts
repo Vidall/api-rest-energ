@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { pessoaFisicaControllers } from '../../controllers/clients/pessoaFisica';
 
-export const pessoaFisicaRouters = (router: Router) => {
+export const pessoaFisica = (router: Router) => {
   const routers = [
     router.post('/clientes/pessoaFisica', pessoaFisicaControllers.createValidation, pessoaFisicaControllers.create),
     router.put('/clientes/pessoaFisica/:id', pessoaFisicaControllers.updateByIdValidation, pessoaFisicaControllers.updateById),
