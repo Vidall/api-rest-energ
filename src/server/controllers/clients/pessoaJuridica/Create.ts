@@ -15,23 +15,21 @@ const enderecoSchema = yup.object().shape({
 
 const bodySchema = yup.object().shape({
   nome: yup.string().required().min(3),
+  email: yup.string().required().email(),
+  telefone: yup.string().required().matches(/^\d{10,11}$/, 'Telefone inválido'),
   endereco: enderecoSchema.required(),
   cnpj: yup.string().required().test('cnpj', 'cnpj inválido', value => cnpj.isValid(value || '')),
   tipo: yup.string().oneOf(['juridico']).optional()
 });
 
 export const createValidation = validation((getSchema) => ({
-  body: getSchema<IpessoaJuridica>(bodySchema)
+  body: getSchema<Omit<IpessoaJuridica, 'tipo'>>(bodySchema)
 }));
 
 export const create = async (req: Request, res: Response) => {
+  const id = 1;
   const body = req.body;
+  const tipo = 'juridico';
 
-  const {tipo} = req.body;
-
-  if (!tipo) {
-    return res.status(statusCodes.OK).json({...body, tipo: 'juridico'});    
-  }
-
-  return res.status(statusCodes.OK).json(body);
+  return res.status(statusCodes.OK).json({id, ...body, tipo});
 };
