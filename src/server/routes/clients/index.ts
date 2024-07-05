@@ -1,7 +1,7 @@
 import * as pessoaFisica from './pessoaFisicaRoute';
 import * as pessoaJuridica from './pessoaJuridicaRoute';
 
-export const routers = {
+export const routes = {
   ...pessoaFisica,
   ...pessoaJuridica
 };
