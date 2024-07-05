@@ -32,3 +32,18 @@ export interface IpessoaJuridica{
   cnpj: string,
   tipo?: 'juridico'
 }
+
+export interface IUpdatePessoaJuridica {
+  cnpj?: string;
+  nome?: string;
+  endereco?: IEnderecoUpdate;
+  telefone?: string
+}
+
+/*eslint-disable*/
+export type TUpdatePessoaJuridicaKeys = [
+  'nome', 
+  'cnpj', 
+  'tipo', 
+  'endereco'
+]
