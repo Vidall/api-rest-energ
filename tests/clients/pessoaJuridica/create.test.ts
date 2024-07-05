@@ -3,12 +3,11 @@ import { testServer } from '../../jest.setup';
 
 /*eslint-disable*/
 
-describe('Cliente - Pessoa Fisica', () => {
-
-  const rotaCreate = '/clientes/pessoaFisica/';
+describe('Cliente - Pessoa juridica', () => {
+  const rotaCreate = '/clientes/pessoaJuridica/';
   const bodyCreate = {
     'nome': 'TESTE 1',
-    'cpf': '16157636785',
+    'cnpj': '65.587.278/0001-52',
     'email': 'TESTE1@TESTE1.com',
     'telefone': '24999318788',
     'endereco': {
@@ -19,7 +18,7 @@ describe('Cliente - Pessoa Fisica', () => {
     }
   };
 
-  it('create - criar uma pessa fisica', async () => {
+  it('create - criar uma pessa juridica', async () => {
 
     const res1 = await testServer
       .post(rotaCreate)
@@ -33,10 +32,10 @@ describe('Cliente - Pessoa Fisica', () => {
 
     const res = await testServer
       .post(rotaCreate)
-      .send({...bodyCreate, cpf: '11111111111'});
+      .send({bodyCreate, cnpj: '111111'});
 
     expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-    expect(res.body).toHaveProperty('errors.body.cpf');
+    expect(res.body).toHaveProperty('errors.body.cnpj');
 
   });
 
@@ -44,7 +43,7 @@ describe('Cliente - Pessoa Fisica', () => {
 
     const res = await testServer
       .post(rotaCreate)
-      .send({...bodyCreate, email: 'luan.com'});
+      .send({bodyCreate, email: 'luan.com'});
 
     expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
     expect(res.body).toHaveProperty('errors.body.email');
@@ -55,7 +54,7 @@ describe('Cliente - Pessoa Fisica', () => {
 
     const res = await testServer
       .post(rotaCreate)
-      .send({...bodyCreate, telefone: '111111111'});
+      .send({bodyCreate, telefone: '1111'});
 
     expect(res.statusCode).toEqual(StatusCodes.BAD_REQUEST);
     expect(res.body).toHaveProperty('errors.body.telefone');

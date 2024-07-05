@@ -35,6 +35,7 @@ export const updateByIdValidation = validation((getSchema) => ({
 export const updateById = async (req: Request, res: Response) => {
   const body = req.body;
   const id = 1;
+  const tipo = 'juridico';
 
-  return res.status(StatusCodes.OK).json({id, ...body});
+  return res.status(StatusCodes.OK).json({id, ...body, tipo});
 };

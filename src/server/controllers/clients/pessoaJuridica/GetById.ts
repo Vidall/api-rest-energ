@@ -16,7 +16,16 @@ export const GetByIdValidation = validation((getSchema) => ({
 
 export const GetById = async (req: Request<IParamProps>, res: Response) => {
 
-  const id = req.params;
+  const {id} = req.params;
 
-  return res.status(StatusCodes.ACCEPTED).json(id);
+  // Temporário somente para validar teste de id inexistente
+  if (Number(id) === 9999) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        default: 'Cadastro não encontrado'
+      }
+    });
+  }
+
+  return res.status(StatusCodes.OK).json(id);
 };
