@@ -6,7 +6,7 @@
     "start": "yarn ts-node-dev ./src/index.ts",
     "production": "node ./build/index.js",
     "postinstall": "tsc",
-    "knex:migrate": "knex --knexfile ./src/server/database/knex/Enviroment.ts  migrate:make create-table-pessoaFisica",
+    "knex:migrate": "knex --knexfile ./src/server/database/knex/Enviroment.ts  migrate:latest",
     "knex:rollback-all": "knex --knexfile ./src/server/database/knex/Enviroment.ts migrate:rollback-all",
     "knex:rollback": "knex --knexfile ./src/server/database/knex/Enviroment.ts  migrate:rollback",
     "seed": "knex --knexfile ./src/server/database/knex/Enviroment.ts seed:run",
