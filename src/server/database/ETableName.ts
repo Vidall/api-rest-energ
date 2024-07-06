@@ -3,5 +3,6 @@
 import { pessoaFisica } from "../routes/clients/pessoaFisicaRoute";
 
 export enum ETableName{
-  pessoaFisica = 'pessoaFisica'
+  pessoaFisica = 'pessoaFisica',
+  pessoaJuridica = 'pessoaJuridica'
 } 
