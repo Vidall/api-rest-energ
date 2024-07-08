@@ -9,7 +9,7 @@ interface IReturn  {
 
 export const deleteById = async (id: number): Promise< IReturn> => {
   try {
-    const result = await knex(ETableName.pessoaFisica)
+    const result = await knex(ETableName.pessoaJuridica)
       .where('id', id)
       .del();
 
