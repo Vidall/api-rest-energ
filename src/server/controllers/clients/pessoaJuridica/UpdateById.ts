@@ -4,6 +4,7 @@ import { IpessoaJuridica } from '../../../database/models';
 import { cnpj } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { pessoaJuridicaProviders } from '../../../database/providers/clients/pessoaJuridica';
 
 interface IParamsProps {
   id?: number
@@ -17,6 +18,7 @@ const enderecoSchema = yup.object().shape({
 });
 
 const bodySchema = yup.object().shape({
+  id: yup.number().integer().moreThan(0).optional(),
   nome: yup.string().required().min(3),
   email: yup.string().required().email(),
   telefone: yup.string().required().matches(/^\d{10,11}$/, 'Telefone inválido'), 
@@ -33,9 +35,21 @@ export const updateByIdValidation = validation((getSchema) => ({
 }));
 
 export const updateById = async (req: Request, res: Response) => {
-  const body = req.body;
-  const id = 1;
-  const tipo = 'juridico';
+  const id = Number(req.params.id || 0) ;
+  const pessoaFisica = req.body;
 
-  return res.status(StatusCodes.OK).json({id, ...body, tipo});
+  const enderecoParse = JSON.stringify(req.body.endereco);
+
+  const updateResult = await pessoaJuridicaProviders.updateById(id, {...pessoaFisica, endereco: enderecoParse}); 
+  
+  if (updateResult.status !== StatusCodes.NO_CONTENT){
+    return res.status(updateResult.status).json({
+      errors: {
+        default: updateResult.message
+      }
+    });
+  } else if (updateResult.status === StatusCodes.NO_CONTENT) {
+
+    return res.status(updateResult.status).json();
+  }
 };

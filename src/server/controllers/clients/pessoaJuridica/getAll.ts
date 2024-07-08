@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../../shared/middlewares/validation';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { pessoaJuridicaProviders } from '../../../database/providers/clients/pessoaJuridica';
 
 interface IQueryProps {
   id?: number,
@@ -22,13 +23,23 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<IQueryProps>, res: Response) => {
 
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 7;
-  const filter = req.query.filter || '';
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 7;
+  const filter = req.query.filter?.toString() || '';
   const id = Number(req.query.id) || 0;
+
+  const result = await pessoaJuridicaProviders.getAll(page, limit, filter, id);
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: result.message
+      }
+    });
+  }
 
   res.setHeader('access-control-expose-headers', 'x-total-count');
   res.setHeader('x-total-count', 1);
 
-  return res.status(StatusCodes.OK).json({page, limit, filter, id});
+  return res.status(StatusCodes.OK).json(result);
 };

@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../../shared/middlewares/validation';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
+import { pessoaJuridicaProviders } from '../../../database/providers/clients/pessoaJuridica';
 
 interface IParamProps {
   id?: number
@@ -16,16 +17,17 @@ export const GetByIdValidation = validation((getSchema) => ({
 
 export const GetById = async (req: Request<IParamProps>, res: Response) => {
 
-  const {id} = req.params;
+  const id = Number(req.params.id);
 
-  // Temporário somente para validar teste de id inexistente
-  if (Number(id) === 9999) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
+  const result = await pessoaJuridicaProviders.getById(id);
+
+  if (result.status !== StatusCodes.OK) {
+    return res.status(result.status).json({
       errors: {
-        default: 'Cadastro não encontrado'
-      }
+        default: result.message,
+      },
     });
   }
 
-  return res.status(StatusCodes.OK).json(id);
+  return res.status(result.status).json(result.data);
 };

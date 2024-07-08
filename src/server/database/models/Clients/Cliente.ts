@@ -22,6 +22,7 @@ export interface IPessoaFisicaUpdate{
 }
 
 export interface IpessoaJuridica{
+  id?: number
   nome: string,
   email: string,
   telefone: string

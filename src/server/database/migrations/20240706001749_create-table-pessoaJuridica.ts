@@ -11,9 +11,9 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').notNullable().unique();
       table.string('telefone').notNullable();
       table.json('endereco').notNullable();
-      table.string('tipo', 6).checkLength('<=', 6).notNullable().defaultTo('juridico');
+      table.string('tipo').notNullable().defaultTo('juridico');
 
-      table.comment('Criado a tabela cliente pessoa fisica');
+      table.comment('Criado a tabela cliente pessoa juridica');
     });
 }
 export async function down(knex: Knex): Promise<void> {
