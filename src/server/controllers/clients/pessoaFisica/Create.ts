@@ -4,6 +4,7 @@ import { cpf } from 'cpf-cnpj-validator';
 import { IPessoaFisica } from '../../../database/models/Clients/Cliente';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { pessoaFisicaProviders } from '../../../database/providers';
 
 const enderecoSchema = yup.object().shape({
   rua: yup.string().required(),
@@ -13,6 +14,7 @@ const enderecoSchema = yup.object().shape({
 });
 
 const bodySchema = yup.object().shape({
+  id: yup.number().integer().moreThan(0).optional(),
   nome: yup.string().required().min(3),
   email: yup.string().required().email(),
   telefone: yup.string().required().matches(/^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/, 'telefone inválido'),
@@ -27,9 +29,19 @@ export const createValidation = validation((getSchema) => ({
 
 export const create = async (req: Request, res: Response) => {
 
-  const id = 1;
-  const body = req.body;
+  const RequestPessoaFisica = req.body;
+  const enderecoParse = JSON.stringify(req.body.endereco);
   const tipo = 'fisico';
 
-  return res.status(StatusCodes.OK).json({id, ...body, tipo});
+  const result = await pessoaFisicaProviders.create({...RequestPessoaFisica, tipo, endereco: enderecoParse});
+
+  if (result.status !== StatusCodes.CREATED) {
+    return res.status(result.status).json({
+      errors: {
+        default: result.message
+      }
+    });
+  }
+
+  return res.status(StatusCodes.OK).json(result.IdCreated);
 };
