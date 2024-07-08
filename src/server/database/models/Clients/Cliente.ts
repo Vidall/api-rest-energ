@@ -1,4 +1,4 @@
-interface Endereco {
+export interface Endereco {
   rua: string,
   numero: number,
   bairro: string,
@@ -6,11 +6,19 @@ interface Endereco {
 }
 
 export interface IPessoaFisica{
+  id?: number
   nome: string,
   endereco: Endereco,
   email: string,
   cpf: string,
   tipo: 'fisico'
+}
+export interface IPessoaFisicaUpdate{
+  nome?: string,
+  endereco?: Endereco,
+  email?: string,
+  cpf?: string,
+  tipo?: 'fisico'
 }
 
 export interface IpessoaJuridica{

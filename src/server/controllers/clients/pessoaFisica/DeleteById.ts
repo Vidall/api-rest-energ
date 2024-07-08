@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { validation } from '../../../shared/middlewares/validation';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { pessoaFisicaProviders } from '../../../database/providers';
 
 interface IParamsProps {
   id: number
@@ -15,7 +16,17 @@ export const deleteByIdValidation = validation((getSchema) => ({
 
 export const deleteById = async (req: Request, res: Response) => {
 
-  const { id } = req.params;
+  const id = Number(req.params.id);
 
-  return res.status(StatusCodes.OK).json({id});
+  const result = await pessoaFisicaProviders.deleteById(id);
+
+  if (result.status !== StatusCodes.NO_CONTENT) {
+    return res.status(result.status).json({
+      errors: {
+        default: result.message
+      }
+    });
+  }
+
+  return res.status(StatusCodes.OK).json();
 };
