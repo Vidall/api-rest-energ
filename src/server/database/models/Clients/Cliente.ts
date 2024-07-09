@@ -8,7 +8,7 @@ export interface Endereco {
 export interface IPessoaFisica{
   id?: number
   nome: string,
-  endereco: Endereco,
+  endereco: Endereco | string,
   email: string,
   cpf: string,
   tipo: 'fisico'

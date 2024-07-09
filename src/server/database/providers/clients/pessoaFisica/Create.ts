@@ -13,6 +13,7 @@ export const create = async (pessoaFisica: Omit<IPessoaFisica, 'id'>): Promise<I
   try {    
 
     const OnlyNumber = pessoaFisica.cpf.replace(/\D/g, '');
+    const enderecoStringfy = JSON.stringify(pessoaFisica.endereco);
 
     //Validação se o e-mail é único    
     if (pessoaFisica.email){
@@ -49,7 +50,7 @@ export const create = async (pessoaFisica: Omit<IPessoaFisica, 'id'>): Promise<I
     }
 
     // Inserção da pessoa Fisica no BD
-    const [result]  = await knex(ETableName.pessoaFisica).insert({...pessoaFisica, cpf: OnlyNumber}).returning('id');
+    const [result]  = await knex(ETableName.pessoaFisica).insert({...pessoaFisica, cpf: OnlyNumber, endereco: enderecoStringfy}).returning('id');
 
     if (result) {
       return {
