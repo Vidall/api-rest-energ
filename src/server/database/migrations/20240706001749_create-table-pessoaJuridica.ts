@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     .createTable(ETableName.pessoaJuridica, table => {
       table.bigIncrements('id').primary().index();
       table.string('nome').checkLength('>=', 3).checkLength('<=', 150).notNullable();
-      table.string('cnpj').notNullable();
+      table.string('cnpj').notNullable().unique();
       table.string('email').notNullable().unique();
       table.string('telefone').notNullable();
       table.json('endereco').notNullable();

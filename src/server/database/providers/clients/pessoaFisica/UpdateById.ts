@@ -7,35 +7,63 @@ interface IReturn {status: number, message?: string}
 
 export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promise< IReturn > => {
   try {
-    //-*-*-*-*-*-*-*-*-*-* Verificação do email se é único
-    let uniqueEmail = true;
 
-    if (pessoaFisica.email){    
-      const [{count}] = await knex(ETableName.pessoaFisica)        
+    // CPF somente com numeros
+    const onlyNumberCPF = pessoaFisica.cpf.replace(/\D/g, '');
+
+    // Validação se o e-mail é único  
+    if (pessoaFisica.email){
+      let uniqueEmail = true;
+    
+      const consultByEmail = await knex(ETableName.pessoaFisica)   
+        .select('*')     
         .where('email', pessoaFisica.email)
-        .count<[{count: number}]>('* as count');
+        .first();
     
-      if (count !== 0) uniqueEmail = false;
+      if (consultByEmail && consultByEmail.id !== id) uniqueEmail = false;
+      if (!uniqueEmail) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'E-mail informado já existe'
+        };       
+      }   
     }
-    //-*-*-*-*-*-*-*-*-*-*
     
-    if (!uniqueEmail) {
+    // Validação se o CPF é único    
+    if (onlyNumberCPF){    
+      let uniqueCpf = true;
+    
+      const consultByCPF = await knex(ETableName.pessoaFisica) 
+        .select('*')       
+        .where('cpf', onlyNumberCPF)
+        .first();
+        
+      if (consultByCPF && consultByCPF.id !== id) uniqueCpf = false;
+      if (!uniqueCpf) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'CPF já está cadastrado'
+        };       
+      }        
+    }  
+    
+    // Atualização no BD
+    const result = await knex(ETableName.pessoaFisica)
+      .update(pessoaFisica)
+      .where('id', id)
+      .first();
+
+    if (!result) {
       return {
         status: StatusCodes.BAD_REQUEST,
-        message: 'Email já esta em uso'
+        message: 'Registro não localizado',
       };
-    }else {
-      /*eslint-disable-next-line*/
-      const result = await knex(ETableName.pessoaFisica)
-        .update(pessoaFisica)
-        .where('id', id);
-
+    } else {
       return {
         status: StatusCodes.NO_CONTENT,
         message: 'Registro atualizado com sucesso',
       };
     }
-
   } catch (error) {
     console.log(error);   
     

@@ -7,11 +7,11 @@ export async function up(knex: Knex): Promise<void> {
     .createTable(ETableName.pessoaFisica, table => {
       table.bigIncrements('id').primary().index();
       table.string('nome').checkLength('>=', 3).checkLength('<=', 150).notNullable();
-      table.string('cpf').notNullable();
+      table.string('cpf').notNullable().unique();
       table.string('email').notNullable().unique();
       table.string('telefone').notNullable();
       table.json('endereco').notNullable();
-      table.string('tipo', 6).checkLength('<=', 6).notNullable().defaultTo('fisico');
+      table.string('tipo').notNullable().defaultTo('fisico');
 
       table.comment('Criado a tabela cliente pessoa fisica');
     });

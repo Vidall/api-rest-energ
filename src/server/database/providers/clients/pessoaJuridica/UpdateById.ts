@@ -7,39 +7,68 @@ interface IReturn {status: number, message?: string}
 
 export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): Promise< IReturn > => {
   try {
-    // Deixar a string de cnpj com somente numeros
-    const OnlyNumber = pessoaJuridica.cnpj.replace(/\D/g, '');
-    
-    //-*-*-*-*-*-*-*-*-*-* Verificação do email se é único
-    let uniqueEmail = true;
+    // CNPJ somente com numeros
+    const onlyNumberCNPJ = pessoaJuridica.cnpj.replace(/\D/g, '');
 
-    if (pessoaJuridica.email){    
-      const consult = await knex(ETableName.pessoaJuridica)    
-        .select('*')    
+    // Validação se o e-mail é único  
+    if (pessoaJuridica.email){
+      let uniqueEmail = true;
+    
+      const consultByEmail = await knex(ETableName.pessoaJuridica)   
+        .select('*')     
         .where('email', pessoaJuridica.email)
         .first();
     
-      if (consult?.cnpj !== OnlyNumber) uniqueEmail = false;
+      if (consultByEmail && consultByEmail.id !== id) uniqueEmail = false;
+      if (!uniqueEmail) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'E-mail informado já existe'
+        };       
+      }   
     }
-    //-*-*-*-*-*-*-*-*-*-*
     
-    if (!uniqueEmail) {
+    // Validação se o CNPJ é único    
+    if (onlyNumberCNPJ){    
+      let uniqueCpf = true;
+    
+      const consultByCPF = await knex(ETableName.pessoaJuridica) 
+        .select('*')       
+        .where('cnpj', onlyNumberCNPJ)
+        .first();
+        
+      if (consultByCPF && consultByCPF.id !== id) uniqueCpf = false;
+      if (!uniqueCpf) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'CNPJ já está cadastrado'
+        };       
+      }        
+    } 
+
+    // Chamada para atualizar
+    const result = await knex(ETableName.pessoaJuridica)
+      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ})
+      .where('id', id);
+
+    // Validação se é objeto
+    if (!result) {
       return {
-        status: StatusCodes.BAD_REQUEST,
-        message: 'Email já esta em uso'
+        status: StatusCodes.NOT_FOUND,
+        message: 'Registro não localizado',
       };
     }else {
-      /*eslint-disable-next-line*/
-      const result = await knex(ETableName.pessoaJuridica)
-        .update({...pessoaJuridica, cnpj: OnlyNumber})
-        .where('id', id);
-
       return {
-        status: StatusCodes.NO_CONTENT,
+        status: StatusCodes.OK,
         message: 'Registro atualizado com sucesso',
       };
     }
-
+    
+    // Caso passe por todas validações mas ainda seja erro
+    return {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+      message: 'Não foi possível atualizar o registro',
+    };
   } catch (error) {
     console.log(error);   
     

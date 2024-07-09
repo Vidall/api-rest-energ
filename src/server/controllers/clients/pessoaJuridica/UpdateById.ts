@@ -42,14 +42,14 @@ export const updateById = async (req: Request, res: Response) => {
 
   const updateResult = await pessoaJuridicaProviders.updateById(id, {...pessoaFisica, endereco: enderecoParse}); 
   
-  if (updateResult.status !== StatusCodes.NO_CONTENT){
+  if (updateResult.status !== StatusCodes.OK){
     return res.status(updateResult.status).json({
       errors: {
         default: updateResult.message
       }
     });
-  } else if (updateResult.status === StatusCodes.NO_CONTENT) {
+  } else if (updateResult.status === StatusCodes.OK) {
 
-    return res.status(updateResult.status).json();
+    return res.status(updateResult.status).json({message: updateResult.message});
   }
 };

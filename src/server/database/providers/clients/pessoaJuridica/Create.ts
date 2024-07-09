@@ -12,32 +12,46 @@ interface Ireturn {
 export const create = async (pessoaJuridica: Omit<IpessoaJuridica, 'id'>): Promise<Ireturn> => {
   try {    
 
-    //-*-*-*-*-*Verificação do email se é único
-    let uniqueEmail = true;
+    const OnlyNumber = pessoaJuridica.cnpj.replace(/\D/g, '');
 
+    //Validação se o e-mail é único    
     if (pessoaJuridica.email){
+      let uniqueEmail = true;
 
       const [{count}] = await knex(ETableName.pessoaJuridica)        
         .where('email', pessoaJuridica.email)
         .count<[{count: number}]>('* as count');
 
-      if (count !== 0) uniqueEmail = false;
-    }
-    //-*-*-*-*-*-*-*-*-*-*
-
-    if (!uniqueEmail) {     
-      return {
-        status: StatusCodes.BAD_REQUEST,
-        message: 'E-mail informado já existe'
-      };       
+      if (count && count !== 0) uniqueEmail = false;
+      if (!uniqueEmail) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'E-mail informado já existe'
+        };       
+      }   
     }
 
-    // Deixar somente os numeros no BD
-    const OnlyNumber = pessoaJuridica.cnpj.replace(/\D/g, '');
+    // Validação se o CNPJ é único    
+    if (OnlyNumber){    
+      let uniqueCpf = true;
+
+      const [{count}] = await knex(ETableName.pessoaJuridica)        
+        .where('cnpj', OnlyNumber)
+        .count<[{count: number}]>('* as count');
     
+      if (count && count !== 0) uniqueCpf = false;
+      if (!uniqueCpf) {     
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: 'CNPJ já está cadastrado'
+        };       
+      }        
+    }
+
+    // Inserção da pessoa Fisica no BD
     const [result]  = await knex(ETableName.pessoaJuridica).insert({...pessoaJuridica, cnpj: OnlyNumber}).returning('id');
 
-    if (typeof result === 'object') {
+    if (result) {
       return {
         status: StatusCodes.CREATED,
         message: 'Registro criado com sucesso',
