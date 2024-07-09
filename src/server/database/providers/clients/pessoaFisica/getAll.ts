@@ -35,6 +35,7 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
       }
     }
 
+    // converter os endereco para JSON Stringfy
     const finalResult = result.map(item => ({
       ...item,
       endereco: JSON.parse(item.endereco as unknown as string)

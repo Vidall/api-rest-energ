@@ -26,7 +26,7 @@ export interface IpessoaJuridica{
   nome: string,
   email: string,
   telefone: string
-  endereco: Endereco,
+  endereco: Endereco | string,
   cnpj: string,
   tipo?: 'juridico'
 }

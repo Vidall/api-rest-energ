@@ -10,6 +10,8 @@ export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promi
 
     // CPF somente com numeros
     const onlyNumberCPF = pessoaFisica.cpf.replace(/\D/g, '');
+    // Endereco para stringfy
+    const enderecoStringfy = JSON.stringify(pessoaFisica.endereco); 
 
     // Validação se o e-mail é único  
     if (pessoaFisica.email){
@@ -49,13 +51,12 @@ export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promi
     
     // Atualização no BD
     const result = await knex(ETableName.pessoaFisica)
-      .update(pessoaFisica)
-      .where('id', id)
-      .first();
+      .update({...pessoaFisica, cpf: onlyNumberCPF, endereco: enderecoStringfy})
+      .where('id', id);
 
     if (!result) {
       return {
-        status: StatusCodes.BAD_REQUEST,
+        status: StatusCodes.NOT_FOUND,
         message: 'Registro não localizado',
       };
     } else {
