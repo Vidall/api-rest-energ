@@ -9,6 +9,8 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
   try {
     // CNPJ somente com numeros
     const onlyNumberCNPJ = pessoaJuridica.cnpj.replace(/\D/g, '');
+    // Endereco para JSON stringFy
+    const enderecoStringFy = JSON.stringify(pessoaJuridica.endereco); 
 
     // Validação se o e-mail é único  
     if (pessoaJuridica.email){
@@ -48,7 +50,7 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
 
     // Chamada para atualizar
     const result = await knex(ETableName.pessoaJuridica)
-      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ})
+      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ, endereco: enderecoStringFy})
       .where('id', id);
 
     // Validação se é objeto
