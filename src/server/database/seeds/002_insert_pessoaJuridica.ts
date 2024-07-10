@@ -6,14 +6,16 @@ export const seed = async (knex: Knex) => {
   const [{ count }] = await knex(ETableName.pessoaJuridica).count<[{ count: number }]>(
     '* as count'
   );
-  const run = true;
+  /*eslint-disable-next-line*/
+  const runDev = process.env.NODE_ENV !== 'production'? true : false;
 
   if (!Number.isInteger(count) || Number(count) > 0) return;
-  if (!run) return;
+  if (!runDev) return;
 
   // Convertendo os campos 'endereco' para strings JSON
   const insertToPessoaJuridica = pessoasJuridica.map((item) => ({
     ...item,
+    cnpj: item.cnpj.replace(/\D/g, ''),
     endereco: JSON.stringify(item.endereco),
   }));
   await knex(ETableName.pessoaJuridica).insert(insertToPessoaJuridica);

@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middlewares/validation';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-// import { pessoaJuridicaProviders } from '../../database/providers/clients/pessoaJuridica';
+import { tecnicosProviders } from '../../database/providers/tecnicos';
 
 interface IParamProps {
   id?: number
@@ -19,15 +19,15 @@ export const GetById = async (req: Request<IParamProps>, res: Response) => {
 
   const id = Number(req.params.id);
 
-  // const result = await pessoaJuridicaProviders.getById(id);
+  const result = await tecnicosProviders.getById(id);
 
-  // if (result.status !== StatusCodes.OK) {
-  //   return res.status(result.status).json({
-  //     errors: {
-  //       default: result.message,
-  //     },
-  //   });
-  // }
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: result.message
+      }
+    });
+  }
 
-  return res.status(StatusCodes.OK).json(id);
+  return res.status(StatusCodes.OK).json(result);
 };

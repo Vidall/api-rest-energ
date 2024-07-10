@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { validation } from '../../shared/middlewares/validation';
 import * as yup from 'yup';
 import { StatusCodes } from 'http-status-codes';
+import { tecnicosProviders } from '../../database/providers/tecnicos';
 // import { pessoaJuridicaProviders } from '../../database/providers/clients/pessoaJuridica';
 
 interface IParamsProps {
@@ -18,15 +19,15 @@ export const deleteById = async (req: Request, res: Response) => {
 
   const id = Number(req.params.id);
 
-  // const result = await pessoaJuridicaProviders.deleteById(id);
+  const result = await tecnicosProviders.deleteById(id);
 
-  // if (result.status !== StatusCodes.NO_CONTENT) {
-  //   return res.status(result.status).json({
-  //     errors: {
-  //       default: result.message
-  //     }
-  //   });
-  // }
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: result.message
+      }
+    });
+  }
 
-  return res.status(StatusCodes.OK).json(id);
+  return res.status(StatusCodes.OK).json(result);
 };

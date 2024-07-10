@@ -2,7 +2,8 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middlewares/validation';
 import { ITecnico } from '../../database/models/tecnicos/Tecnico';
 import { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
+
+import { tecnicosProviders } from '../../database/providers/tecnicos';
 
 export const createValidation = validation((getSchema) => ({
   body: getSchema<Omit<ITecnico, 'id'>>(yup.object().shape({
@@ -17,7 +18,8 @@ export const createValidation = validation((getSchema) => ({
 }));
 
 export const create = async (req: Request, res: Response) => {
-  const tecnico = req.body;
+  
+  const result = await tecnicosProviders.create(req.body);
 
-  res.status(StatusCodes.OK).json(tecnico);
+  res.status(result.status).json(result);
 };
