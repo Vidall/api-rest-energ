@@ -9,9 +9,9 @@ export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promi
   try {
 
     // CPF somente com numeros
-    const onlyNumberCPF = pessoaFisica.cpf.replace(/\D/g, '');
+    const onlyNumberCPF = pessoaFisica.cpf ? pessoaFisica.cpf.replace(/\D/g, ''): pessoaFisica.cpf;
     // Endereco para stringfy
-    const enderecoStringfy = JSON.stringify(pessoaFisica.endereco); 
+    const enderecoStringfy = pessoaFisica.endereco ? JSON.stringify(pessoaFisica.endereco) : pessoaFisica.endereco; 
 
     // Validação se o e-mail é único  
     if (pessoaFisica.email){
