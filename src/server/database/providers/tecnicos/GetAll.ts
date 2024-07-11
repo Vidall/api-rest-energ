@@ -21,7 +21,7 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
       if (resultById) return [...result, resultById];
     }
 
-    if (typeof result === 'object') {      
+    if (typeof result === 'object') {           
       return result;
     } else {
       return [];

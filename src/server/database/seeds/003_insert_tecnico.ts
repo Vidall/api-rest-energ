@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { ETableName } from '../ETableName';
+import { passWordCrypto } from '../../shared/service';
 
 export const seed = async (knex: Knex) => {
   // Validação antes de gerar a seed
@@ -11,12 +12,16 @@ export const seed = async (knex: Knex) => {
 
   if (!Number.isInteger(count) || Number(count) > 0) return;
   if (!runDev) return;
-
-  // Convertendo os campos 'endereco' para strings JSON
-  const insertToTecnico = tecnicos.map((item) => ({
+  
+  const insertToTecnicoPromises = tecnicos.map(async (item) => ({
     ...item,
-    cpf: item.cpf.replace(/\D/g, '')    
+    cpf: item.cpf.replace(/\D/g, ''),
+    senha: await passWordCrypto.hashPassWord(item.senha)
   }));
+
+  // Somente quando resolver todas as promise
+  const insertToTecnico = await Promise.all(insertToTecnicoPromises);
+
   await knex(ETableName.tecnico).insert(insertToTecnico);
 };
 

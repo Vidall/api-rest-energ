@@ -14,7 +14,12 @@ const bodySchema = yup.object().shape({
   nome: yup.string().optional().min(3),
   email: yup.string().optional().email(),
   telefone: yup.string().optional().matches(/^\d{10,11}$/, 'Telefone inválido'),
-  cpf: yup.string().optional().test('cpf', 'cpf inválido', value => cpf.isValid(value || '')),
+  cpf: yup.string().optional().test('cpf', 'cpf inválido', value => {
+    if (!value) {
+      return true;
+    }
+    cpf.isValid(value || '');
+  }),
   senha: yup.string().optional(),
   updateSenha: yup.string().optional(),
   admin: yup.boolean().optional(),
