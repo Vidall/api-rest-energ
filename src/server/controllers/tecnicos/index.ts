@@ -4,6 +4,7 @@ import * as GetAll from './getAll';
 import * as DeleteById from './DeleteById';
 import * as UpdateById from './UpdateById';
 import * as signin from './Signin';
+import * as upload from './Upload';
 
 export const tecnicosControllers = {
   ...create,
@@ -11,5 +12,6 @@ export const tecnicosControllers = {
   ...GetAll,
   ...DeleteById,
   ...UpdateById,
-  ...signin
+  ...signin,
+  ...upload
 };

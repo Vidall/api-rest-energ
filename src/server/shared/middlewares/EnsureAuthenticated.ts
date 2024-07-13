@@ -18,7 +18,7 @@ export const ensureAuthenticated: RequestHandler = (req, res, next) => {
   if (type !== 'Bearer') {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
-        default: 'Não autorizado bearer'
+        default: 'Não autorizado'
       }
     });
   }

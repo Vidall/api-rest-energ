@@ -40,7 +40,7 @@ export const signIn = async (req: Request, res: Response) => {
       }
     });
   }else {
-    const accessToken = JWTService.sigin({Uid: tecnico.id, admin: tecnico.admin});
+    const accessToken = JWTService.signIn({Uid: tecnico.id, admin: tecnico.admin});
 
     if (accessToken === 'JWT_SECRET_NOT_FOUND') {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
