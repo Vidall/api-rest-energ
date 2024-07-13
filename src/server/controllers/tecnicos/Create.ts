@@ -9,6 +9,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import {randomImageName, s3} from '../../shared/service/S3Service';
 import { StatusCodes } from 'http-status-codes';
 import sharp from 'sharp';
+import { MulterFile } from '../../database/models/tecnicos/Multer';
 
 export const createValidation = validation((getSchema) => ({
   body: getSchema<Omit<ITecnico, 'id'>>(yup.object().shape({
@@ -21,19 +22,6 @@ export const createValidation = validation((getSchema) => ({
     pathAssinatura: yup.string().optional()
   }))
 }));
-
-interface MulterFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  size: number;
-  destination?: string;
-  filename?: string;
-  path?: string;
-  //eslint-disable-next-line
-  buffer?: Buffer;
-}
 
 export const create = async (req: Request, res: Response) => {
 

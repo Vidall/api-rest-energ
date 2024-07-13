@@ -3,17 +3,29 @@ import { IUpdateTecnico } from '../../models/tecnicos/Tecnico';
 import { knex } from '../../knex';
 import { ETableName } from '../../ETableName';
 import { passWordCrypto } from '../../../shared/service';
+import { MulterFile } from '../../models/tecnicos/Multer';
+import { randomImageName } from '../../../shared/service/S3Service';
 
 interface IResult {
   status: StatusCodes,
   message?: string 
 }
 
-export const updateById = async (id: number, tecnico: IUpdateTecnico): Promise<IResult> => {
+export const updateById = async (id: number, tecnico: IUpdateTecnico, file: MulterFile): Promise<IResult> => {
   try {
 
     // CPF somente com numeros
     const onlyNumberCPF = tecnico.cpf?.replace(/\D/g, '');
+
+    // Pegar o caminho da assinatura
+    let pathAssinatura = '';    
+    if (file) {
+      /*eslint-disable-next-line*/
+    const bucketName = process.env.BUCKET_NAME;
+      /*eslint-disable-next-line*/
+    const region = process.env.REGION;
+      pathAssinatura = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;      
+    }
 
     // Validar se o email é único
     if (tecnico.email) {
@@ -72,7 +84,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico): Promise<I
         delete tecnico.updateSenha;
 
         const result = await knex(ETableName.tecnico)
-          .update({...tecnico, cpf: onlyNumberCPF, senha: hashPassword})
+          .update({...tecnico, cpf: onlyNumberCPF, senha: hashPassword, pathAssinatura})
           .where('id', id);
 
         if (!result) {
@@ -91,7 +103,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico): Promise<I
 
     //Chamada do update
     const result = await knex(ETableName.tecnico)
-      .update({...tecnico, cpf: onlyNumberCPF})
+      .update({...tecnico, cpf: onlyNumberCPF, pathAssinatura})
       .where('id', id);
 
     if (!result) {

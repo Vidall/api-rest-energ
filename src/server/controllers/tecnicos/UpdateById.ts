@@ -4,6 +4,10 @@ import { IUpdateTecnico } from '../../database/models/tecnicos/Tecnico';
 import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { tecnicosProviders } from '../../database/providers/tecnicos';
+import { MulterFile } from '../../database/models/tecnicos/Multer';
+import { randomImageName, s3 } from '../../shared/service/S3Service';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import sharp from 'sharp';
 
 interface IParamsProps {
   id?: number
@@ -31,9 +35,32 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 export const updateById = async (req: Request, res: Response) => {
   const id = Number(req.params.id || 0) ;
-  const tecnico = req.body;
+  const tecnico = {...req.body};
+  const file: MulterFile = req.file!;
 
-  const result = await tecnicosProviders.updateById(id, tecnico);
+  if(req.file) {
+    /*eslint-disable-next-line*/
+  const bucketName = process.env.BUCKET_NAME;
+    // Redimensionando o tamanho da imagem no buffer com a lib sharp
+    const buffer = await sharp(req.file?.buffer).resize({width: 300, height: 300, fit: 'contain'}).toBuffer();
+
+    // Params para serem enviados
+    const contentType = req.file?.mimetype;
+
+    const params = {    
+      Bucket: bucketName,
+      Key: randomImageName,
+      Body: buffer,
+      ContentType: contentType
+    };
+
+    const command = new PutObjectCommand(params);
+
+    // Envio ao S3
+    await s3.send(command);
+  }
+
+  const result = await tecnicosProviders.updateById(id, tecnico, file);
 
   return res.status(result.status).json(result);
 };

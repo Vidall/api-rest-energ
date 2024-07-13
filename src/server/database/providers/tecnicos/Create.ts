@@ -4,19 +4,7 @@ import { knex } from '../../knex';
 import { ITecnico } from '../../models/tecnicos/Tecnico';
 import { passWordCrypto } from '../../../shared/service';
 import { randomImageName } from '../../../shared/service/S3Service';
-
-interface MulterFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  size: number;
-  destination?: string;
-  filename?: string;
-  path?: string;
-  //eslint-disable-next-line
-  buffer?: Buffer;
-}
+import { MulterFile } from '../../models/tecnicos/Multer';
 
 interface Iresult {
   status: StatusCodes,
