@@ -5,7 +5,7 @@ interface IJwt {
   admin: boolean
 }
 
-const sigin = (data: IJwt) => {
+const signIn = (data: IJwt) => {
   /*eslint-disable-next-line*/
   if (!process.env.JWT_SECRET) return 'JWT_SECRET_NOT_FOUND';
   /*eslint-disable-next-line*/
@@ -29,7 +29,7 @@ export const verify = (token: string): IJwt | 'JWT_SECRET_NOT_FOUND' | 'INVALID_
 };
 
 export const JWTService = {
-  sigin,
+  signIn,
   verify
 };
 

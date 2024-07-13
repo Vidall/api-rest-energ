@@ -3,6 +3,20 @@ import { ETableName } from '../../ETableName';
 import { knex } from '../../knex';
 import { ITecnico } from '../../models/tecnicos/Tecnico';
 import { passWordCrypto } from '../../../shared/service';
+import { randomImageName } from '../../../shared/service/S3Service';
+
+interface MulterFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination?: string;
+  filename?: string;
+  path?: string;
+  //eslint-disable-next-line
+  buffer?: Buffer;
+}
 
 interface Iresult {
   status: StatusCodes,
@@ -10,7 +24,7 @@ interface Iresult {
   data?: {id: number}
 }
 
-export const create = async (tecnico: ITecnico): Promise<Iresult> => {
+export const create = async (tecnico: ITecnico, file: MulterFile): Promise<Iresult> => {
   try {
     /* TRATATIVAS*/
     // CPF somente numeros
@@ -55,9 +69,19 @@ export const create = async (tecnico: ITecnico): Promise<Iresult> => {
       }
     }
 
+    /*eslint-disable-next-line*/
+    const bucketName = process.env.BUCKET_NAME;
+    /*eslint-disable-next-line*/
+    const region = process.env.REGION;
+
+    let caminhoTest = '';
+    if (file) {
+      caminhoTest = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;
+    }
+
     // Chamada para cadastrar
     const [result] = await knex(ETableName.tecnico)
-      .insert({...tecnico, cpf: onlyNumberCpf, senha: senhaCrypto})
+      .insert({...tecnico, cpf: onlyNumberCpf, senha: senhaCrypto, pathAssinatura: caminhoTest})
       .returning('id'); 
 
     if (!result) {

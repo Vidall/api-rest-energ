@@ -4,11 +4,13 @@ import { ensureAuthenticated } from '../../shared/middlewares/EnsureAuthenticate
 
 import { admin } from '../../shared/middlewares/Admin';
 
+import {upload} from '../../shared/middlewares/uploadSignatureMulter';
+
 export const tecnico = (router: Router) => {
-  const routers = [
+  const routers = [    
     router.post('/tecnicos/signin', tecnicosControllers.signInValidation, tecnicosControllers.signIn),
     
-    router.post('/tecnicos/', ensureAuthenticated, admin(tecnicosControllers.createValidation), tecnicosControllers.create),
+    router.post('/tecnicos/', ensureAuthenticated, upload.single('file'),admin(tecnicosControllers.createValidation), tecnicosControllers.create),
     router.put('/tecnicos/:id', ensureAuthenticated, admin(tecnicosControllers.updateByIdValidation), tecnicosControllers.updateById),
     router.get('/tecnicos/:id', ensureAuthenticated, tecnicosControllers.GetByIdValidation, tecnicosControllers.GetById),
     router.get('/tecnicos', ensureAuthenticated, tecnicosControllers.getAllValidation, tecnicosControllers.getAll),
