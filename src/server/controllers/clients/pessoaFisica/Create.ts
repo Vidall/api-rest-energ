@@ -1,17 +1,10 @@
 import * as yup from 'yup';
 import { validation } from '../../../shared/middlewares/validation';
 import { cpf } from 'cpf-cnpj-validator';
-import { IPessoaFisica } from '../../../database/models/Clients/Cliente';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { pessoaFisicaProviders } from '../../../database/providers';
-
-const enderecoSchema = yup.object().shape({
-  rua: yup.string().required(),
-  numero: yup.number().required(),
-  bairro: yup.string().required(),
-  cidade: yup.string().required(),
-});
+import { enderecoSchema,equipamentoSchema,IPessoaFisica } from '../../../database/models';
 
 const bodySchema = yup.object().shape({
   id: yup.number().integer().moreThan(0).optional(),
@@ -20,8 +13,12 @@ const bodySchema = yup.object().shape({
   telefone: yup.string().required().matches(/^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/, 'telefone inválido'),
   endereco: enderecoSchema.required(),
   cpf: yup.string().required().test('cpf', 'cpf inválido', value => cpf.isValid(value || '')),
-  tipo: yup.string().oneOf(['fisico']).optional()
-});
+  tipo: yup.string().oneOf(['fisico']).optional(),
+  equipamento: equipamentoSchema.optional(),
+  nomeContato: yup.string().required(),
+  possuiContrato: yup.boolean().required(),
+  tipoContrato: yup.string().required().oneOf(['completo', 'padrão'])
+}).strict().noUnknown();
 
 export const createValidation = validation((getSchema) => ({
   body: getSchema<Omit<IPessoaFisica, 'tipo'>>(bodySchema)

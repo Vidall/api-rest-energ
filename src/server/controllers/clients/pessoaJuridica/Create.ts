@@ -4,15 +4,8 @@ import { cnpj } from 'cpf-cnpj-validator';
 
 import statusCodes, { StatusCodes } from 'http-status-codes';
 import { validation } from '../../../shared/middlewares/validation';
-import {IpessoaJuridica} from '../../../database/models';
+import {enderecoSchema, equipamentoSchema, IpessoaJuridica} from '../../../database/models';
 import { pessoaJuridicaProviders } from '../../../database/providers/clients/pessoaJuridica';
-
-const enderecoSchema = yup.object().shape({
-  rua: yup.string().required(),
-  numero: yup.number().required(),
-  bairro: yup.string().required(),
-  cidade: yup.string().required(),
-});
 
 const bodySchema = yup.object().shape({
   id: yup.number().integer().moreThan(0).optional(),
@@ -21,7 +14,11 @@ const bodySchema = yup.object().shape({
   telefone: yup.string().required().matches(/^\d{10,11}$/, 'Telefone inválido'),
   endereco: enderecoSchema.required(),
   cnpj: yup.string().required().test('cnpj', 'cnpj inválido', value => cnpj.isValid(value || '')),
-  tipo: yup.string().oneOf(['juridico']).optional()
+  tipo: yup.string().oneOf(['juridico']).optional(),
+  equipamento: equipamentoSchema.optional(),
+  nomeContato: yup.string().required(),
+  possuiContrato: yup.boolean().required(),
+  tipoContrato: yup.string().required().oneOf(['completo', 'padrão'])
 });
 
 export const createValidation = validation((getSchema) => ({

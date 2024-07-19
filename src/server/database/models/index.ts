@@ -1,1 +1,2 @@
-export * from './Clients/Cliente';
+export * from './Clients';
+export * from './tecnicos';

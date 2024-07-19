@@ -1,21 +1,14 @@
 import { validation } from '../../../shared/middlewares/validation';
 import * as yup from 'yup';
-import { IPessoaFisicaUpdate } from '../../../database/models/Clients/Cliente';
 import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { pessoaFisicaProviders } from '../../../database/providers';
+import { enderecoSchema, equipamentoSchema, IPessoaFisicaUpdate } from '../../../database/models';
 
 interface IParamsProps {
   id?: number
 }
-
-const enderecoSchema = yup.object().shape({
-  rua: yup.string().required(),
-  numero: yup.number().required(),
-  bairro: yup.string().required(),
-  cidade: yup.string().required(),
-});
 
 const bodySchema = yup.object().shape({
   nome: yup.string().optional().min(3),
@@ -24,6 +17,10 @@ const bodySchema = yup.object().shape({
   telefone: yup.string().optional().matches(/^\d{10,11}$/, 'Telefone inválido'),
   email: yup.string().optional().email(),
   tipo: yup.string().oneOf(['fisico']).optional(),
+  equipamento: equipamentoSchema.optional(),
+  nomeContato: yup.string().optional(),
+  possuiContrato: yup.boolean().optional(),
+  tipoContrato: yup.string().optional().oneOf(['completo', 'padrão'])
 }).strict().noUnknown();
 
 export const updateByIdValidation = validation((getSchema) => ({
@@ -42,15 +39,14 @@ export const updateById = async (req: Request, res: Response) => {
 
   const updateResult = await pessoaFisicaProviders.updateById(id, {...pessoaFisica, endereco: enderecoParse}); 
   
-  if (updateResult.status !== StatusCodes.NO_CONTENT){
+  if (updateResult.status !== StatusCodes.OK){
     return res.status(updateResult.status).json({
       errors: {
         default: updateResult.message
       }
     });
-  } else if (updateResult.status === StatusCodes.NO_CONTENT) {
-
-    return res.status(updateResult.status).json();
   }
 
+  return res.status(updateResult.status).json(updateResult);
 };
+
