@@ -30,9 +30,12 @@ export const validation: TValidation = (getAllSchemas) => async (req, res, next)
 
       yupError.inner.forEach(error => {
         if (error.path === undefined) return;
+        if (error.path === '') {
+          return errors['default'] = error.message;
+        }
         errors[error.path] = error.message;
       });
-
+      
       errorsResult[key] = errors;
     }
   });

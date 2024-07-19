@@ -1,10 +1,9 @@
 import { validation } from '../../shared/middlewares/validation';
 import * as yup from 'yup';
-import { IUpdateTecnico } from '../../database/models/tecnicos/Tecnico';
 import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { tecnicosProviders } from '../../database/providers/tecnicos';
-import { MulterFile } from '../../database/models/tecnicos/Multer';
+import { MulterFile, IUpdateTecnico } from '../../database/models';
 import { randomImageName, s3 } from '../../shared/service/S3Service';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import sharp from 'sharp';

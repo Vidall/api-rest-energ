@@ -1,16 +1,17 @@
 import { StatusCodes } from 'http-status-codes';
 import { ETableName } from '../../../ETableName';
 import { knex } from '../../../knex';
-import { IpessoaJuridica } from '../../../models';
+import { IEquipamento, IpessoaJuridica } from '../../../models';
 
 interface IReturn {status: number, message?: string}
 
 export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): Promise< IReturn > => {
   try {
+    
     // CNPJ somente com numeros
-    const onlyNumberCNPJ = pessoaJuridica.cnpj.replace(/\D/g, '');
+    const onlyNumberCNPJ = pessoaJuridica.cnpj ? pessoaJuridica.cnpj.replace(/\D/g, '') : pessoaJuridica.cnpj;
     // Endereco para JSON stringFy
-    const enderecoStringFy = JSON.stringify(pessoaJuridica.endereco); 
+    const equipamentoStringFy = JSON.stringify(pessoaJuridica.equipamento) as IEquipamento; 
 
     // Validação se o e-mail é único  
     if (pessoaJuridica.email){
@@ -50,7 +51,7 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
 
     // Chamada para atualizar
     const result = await knex(ETableName.pessoaJuridica)
-      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ, endereco: enderecoStringFy})
+      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ, equipamento: equipamentoStringFy})
       .where('id', id);
 
     // Validação se é objeto
@@ -65,12 +66,7 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
         message: 'Registro atualizado com sucesso',
       };
     }
-    
-    // Caso passe por todas validações mas ainda seja erro
-    return {
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: 'Não foi possível atualizar o registro',
-    };
+
   } catch (error) {
     console.log(error);   
     

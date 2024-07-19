@@ -1,9 +1,10 @@
 import { ETableName } from '../../../ETableName';
 import { knex } from '../../../knex';
-import { Endereco, IpessoaJuridica } from '../../../models';
+import { Endereco, IEquipamento, IpessoaJuridica } from '../../../models';
 
 export const getAll = async (page: number, limit: number, filter: string, id = 0): Promise<IpessoaJuridica[] | Error> => {
   try {
+    
     const result = await knex(ETableName.pessoaJuridica)
       .select('*')
       .where('id', id)
@@ -26,10 +27,11 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
           ...result.map(item => ({
             ...item,
             endereco: JSON.parse(item.endereco as unknown as string) as Endereco,
+            equipamento: JSON.parse(item.equipamento as unknown as string) as IEquipamento,
           })),
           {
             ...resultById,
-            endereco: JSON.parse(resultById.endereco as unknown as string) as Endereco,
+            equipamento: JSON.parse(resultById.equipamento as unknown as string) as IEquipamento,
           },
         ] as IpessoaJuridica[];
       }
@@ -37,7 +39,8 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
 
     const finalResult = result.map(item => ({
       ...item,
-      endereco: JSON.parse(item.endereco as unknown as string)
+      endereco: JSON.parse(item.endereco as unknown as string),
+      equipamento: JSON.parse(item.equipamento as unknown as string) as IEquipamento,
     })) as IpessoaJuridica[];
 
     return finalResult;

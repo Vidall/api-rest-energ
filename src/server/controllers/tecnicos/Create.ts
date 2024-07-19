@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares/validation';
-import { ITecnico } from '../../database/models/tecnicos/Tecnico';
 import { Request, Response } from 'express';
 
 import { tecnicosProviders } from '../../database/providers/tecnicos';
@@ -9,7 +8,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import {randomImageName, s3} from '../../shared/service/S3Service';
 import { StatusCodes } from 'http-status-codes';
 import sharp from 'sharp';
-import { MulterFile } from '../../database/models/tecnicos/Multer';
+import { MulterFile, ITecnico } from '../../database/models';
 
 export const createValidation = validation((getSchema) => ({
   body: getSchema<Omit<ITecnico, 'id'>>(yup.object().shape({
@@ -55,7 +54,18 @@ export const create = async (req: Request, res: Response) => {
   const command = new PutObjectCommand(params);
 
   // Envio ao S3
-  await s3.send(command);
+  try {
+    const uploadResult = await s3.send(command);
+    console.log('Resultado do upload:', uploadResult);
+    
+  } catch (error) {
+    console.error('Erro ao fazer o upload da imagem:', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: 'Erro ao enviar a imagem para o S3'
+      }
+    });
+  }
   
   const result = await tecnicosProviders.create(body, file);
 

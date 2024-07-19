@@ -62,14 +62,14 @@ export const create = async (tecnico: ITecnico, file: MulterFile): Promise<Iresu
     /*eslint-disable-next-line*/
     const region = process.env.REGION;
 
-    let caminhoTest = '';
+    let caminhoUrl = '';
     if (file) {
-      caminhoTest = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;
+      caminhoUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;
     }
 
     // Chamada para cadastrar
     const [result] = await knex(ETableName.tecnico)
-      .insert({...tecnico, cpf: onlyNumberCpf, senha: senhaCrypto, pathAssinatura: caminhoTest})
+      .insert({...tecnico, cpf: onlyNumberCpf, senha: senhaCrypto, pathAssinatura: caminhoUrl})
       .returning('id'); 
 
     if (!result) {
