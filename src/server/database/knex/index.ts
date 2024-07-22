@@ -1,5 +1,6 @@
 import Knex from 'knex';
 import { development, production, test } from './Enviroment';
+import 'dotenv/config';
 
 const getEnviroment = () => {
   /*eslint-disable-next-line*/
