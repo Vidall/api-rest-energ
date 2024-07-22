@@ -1,0 +1,1509 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de manipulação de clientes e técnicos",
+    "description": "Essa API tem por objetivo realizar as manipulações das pessoas físicas, jurídicas e os técnicos",
+    "contact": {
+      "email": "luanvidal6565@outlook.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    }
+  ],
+  "tags": [
+    {
+      "name": "pessoa fisica",
+      "description": "Manipulações de pessoas físicas"
+    },
+    {
+      "name": "pessoa juridica",
+      "description": "Manipulações de pessoas jurídicas"
+    },
+    {
+      "name": "técnicos",
+      "description": "Manipulações de técnicos"
+    }
+  ],
+  "paths": {
+    "/clientes/pessoaFisica": {
+      "post": {
+        "tags": ["pessoa fisica"],
+        "summary": "Criar uma nova pessoa física",
+        "requestBody": {
+          "description": "Dados da pessoa física a ser criada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaFisica"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pessoa física criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["pessoa fisica"],
+        "summary": "Obter todas as pessoas físicas",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pessoas físicas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PessoaFisica"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/pessoaFisica/{id}": {
+      "get": {
+        "tags": ["pessoa fisica"],
+        "summary": "Obter pessoa física por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pessoa física encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PessoaFisica"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa física não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["pessoa fisica"],
+        "summary": "Atualizar pessoa física por ID",
+        "requestBody": {
+          "description": "Dados da pessoa física a ser atualizada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaFisicaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pessoa física atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa física não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/pessoaFisica/{id}": {
+      "get": {
+        "tags": ["pessoa fisica"],
+        "summary": "Obter pessoa física por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pessoa física encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PessoaFisica"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa física não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["pessoa fisica"],
+        "summary": "Atualizar pessoa física por ID",
+        "requestBody": {
+          "description": "Dados da pessoa física a ser atualizada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaFisicaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pessoa física atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa física não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["pessoa fisica"],
+        "summary": "Excluir pessoa física por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pessoa física excluída com sucesso"
+          },
+          "404": {
+            "description": "Pessoa física não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/clientes/pessoaJuridica": {
+      "post": {
+        "tags": ["pessoa juridica"],
+        "summary": "Criar uma nova pessoa jurídica",
+        "requestBody": {
+          "description": "Dados da pessoa jurídica a ser criada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaJuridica"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pessoa jurídica criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["pessoa juridica"],
+        "summary": "Obter todas as pessoas jurídicas",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pessoas jurídicas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PessoaJuridica"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/pessoaJuridica/{id}": {
+      "get": {
+        "tags": ["pessoa juridica"],
+        "summary": "Obter pessoa jurídica por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pessoa jurídica encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PessoaJuridica"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa jurídica não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["pessoa juridica"],
+        "summary": "Atualizar pessoa jurídica por ID",
+        "requestBody": {
+          "description": "Dados da pessoa jurídica a ser atualizada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaJuridicaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pessoa jurídica atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa jurídica não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/pessoaJuridica/{id}": {
+      "get": {
+        "tags": ["pessoa juridica"],
+        "summary": "Obter pessoa jurídica por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pessoa jurídica encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PessoaJuridica"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa jurídica não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["pessoa juridica"],
+        "summary": "Atualizar pessoa jurídica por ID",
+        "requestBody": {
+          "description": "Dados da pessoa jurídica a ser atualizada",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PessoaJuridicaUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pessoa jurídica atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pessoa jurídica não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["pessoa juridica"],
+        "summary": "Excluir pessoa jurídica por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Pessoa jurídica excluída com sucesso"
+          },
+          "404": {
+            "description": "Pessoa jurídica não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tecnicos": {
+      "post": {
+        "tags": ["técnicos"],
+        "summary": "Criar técnico",
+        "requestBody": {
+          "description": "Dados do técnico a ser criado",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Tecnico"
+              },
+              "encoding": {
+                "imagem": {
+                  "contentType": "image/*"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Técnico criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["técnicos"],
+        "summary": "Obter todos os técnicos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de técnicos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tecnico"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tecnicos/{id}": {
+      "get": {
+        "tags": ["técnicos"],
+        "summary": "Obter técnico por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Técnico encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tecnico"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Técnico não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["técnicos"],
+        "summary": "Atualizar técnico por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Dados do técnico a ser atualizado",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/TecnicoUpdate"
+              },
+              "encoding": {
+                "imagem": {
+                  "contentType": "image/*"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Técnico atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou duplicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Técnico não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tecnicos/signin": {
+      "post": {
+        "tags": ["técnicos"],
+        "summary": "Autenticar técnico",
+        "requestBody": {
+          "description": "Credenciais do técnico para autenticação",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "lucas@gmail.com"
+                  },
+                  "senha": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                },
+                "required": ["cpf", "senha"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticação bem-sucedida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PessoaFisica": {
+        "type": "object",
+        "properties": {
+  "nome": {
+    "type": "string",
+    "example": "Luan Vidal"
+  },
+  "cpf": {
+    "type": "string",
+    "example": "202.010.190-43"
+  },
+  "email": {
+    "type": "string",
+    "format": "email",
+    "example": "luan.vidal@example.com"
+  },
+  "telefone": {
+    "type": "string",
+    "example": "11987654321"
+  },
+  "endereco": {
+    "type": "object",
+    "properties": {
+      "rua": {
+        "type": "string",
+        "example": "Avenida Paulista"
+      },
+      "numero": {
+        "type": "integer",
+        "example": 1578
+      },
+      "bairro": {
+        "type": "string",
+        "example": "Centro"
+      },
+      "cidade": {
+        "type": "string",
+        "example": "São Paulo"
+      }
+    }
+  },
+  "equipamento": {
+    "type": "object",
+    "properties": {
+      "tipoEquipamento": {
+        "type": "string",
+        "example": "Gerador Elétrico"
+      },
+      "numero": {
+        "type": "string",
+        "example": "GE-123456"
+      },
+      "anoFabricacao": {
+        "type": "integer",
+        "example": 2020
+      },
+      "potencia": {
+        "type": "integer",
+        "example": 150
+      },
+      "motor": {
+        "type": "string",
+        "example": "Motor Diesel 6.8L"
+      },
+      "alternador": {
+        "type": "string",
+        "example": "Alternador Brushless"
+      },
+      "uscaModelo": {
+        "type": "string",
+        "example": "USC-Model-X"
+      },
+      "tensao": {
+        "type": "string",
+        "example": "380V"
+      },
+      "corrente": {
+        "type": "integer",
+        "example": 400
+      },
+      "modeloMotor": {
+        "type": "string",
+        "example": "MD-6800"
+      },
+      "modeloAlternador": {
+        "type": "string",
+        "example": "AL-5000"
+      },
+      "painelControle": {
+        "type": "string",
+        "example": "Painel Digital com Display LCD"
+      },
+      "fabricante": {
+        "type": "string",
+        "example": "Geradores Brasil"
+      },
+      "fatorPotencia": {
+        "type": "number",
+        "format": "float",
+        "example": 0.8
+      },
+      "frequencia": {
+        "type": "integer",
+        "example": 60
+      },
+      "potenciaEletrica": {
+        "type": "integer",
+        "example": 120
+      },
+      "horimetro": {
+        "type": "integer",
+        "example": 250
+      },
+      "numeroMotor": {
+        "type": "integer",
+        "example": 987654
+      },
+      "numeroAlternador": {
+        "type": "integer",
+        "example": 123456
+      }
+    }
+  },
+  "nomeContato": {
+    "type": "string",
+    "example": "Mariana Silva"
+  },
+  "tipoContrato": {
+    "type": "string",
+    "example": "padrão"
+  },
+  "possuiContrato": {
+    "type": "boolean",
+    "example": true
+  }
+        },
+
+        "required": ["nome", "cpf", "email", "telefone", "endereco", "equipamento", "nomeContato", "tipoContrato", "possuiContrato"]
+      },
+      "PessoaFisicaUpdate": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "telefone": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "rua": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "integer"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              }
+            }
+          },
+          "equipamento": {
+            "type": "object",
+            "properties": {
+              "tipoEquipamento": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "anoFabricacao": {
+                "type": "integer"
+              },
+              "potencia": {
+                "type": "integer"
+              }
+            }
+          },
+          "nomeContato": {
+            "type": "string"
+          },
+          "tipoContrato": {
+            "type": "string"
+          },
+          "possuiContrato": {
+            "type": "boolean"
+          }
+        },
+        "required": []
+      },
+      "PessoaJuridica": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Luan Vidal"
+          },
+          "cnpj": {
+            "type": "string",
+            "example": "02.851.086/0001-91"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "luan.vidal@example.com"
+          },
+          "telefone": {
+            "type": "string",
+            "example": "11987654321"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "rua": {
+                "type": "string",
+                "example": "Avenida Paulista"
+              },
+              "numero": {
+                "type": "integer",
+                "example": 1578
+              },
+              "bairro": {
+                "type": "string",
+                "example": "Centro"
+              },
+              "cidade": {
+                "type": "string",
+                "example": "São Paulo"
+              }
+            }
+          },
+          "equipamento": {
+            "type": "object",
+            "properties": {
+              "tipoEquipamento": {
+                "type": "string",
+                "example": "Gerador Elétrico"
+              },
+              "numero": {
+                "type": "string",
+                "example": "GE-123456"
+              },
+              "anoFabricacao": {
+                "type": "integer",
+                "example": 2020
+              },
+              "potencia": {
+                "type": "integer",
+                "example": 150
+              },
+              "motor": {
+                "type": "string",
+                "example": "Motor Diesel 6.8L"
+              },
+              "alternador": {
+                "type": "string",
+                "example": "Alternador Brushless"
+              },
+              "uscaModelo": {
+                "type": "string",
+                "example": "USC-Model-X"
+              },
+              "tensao": {
+                "type": "string",
+                "example": "380V"
+              },
+              "corrente": {
+                "type": "integer",
+                "example": 400
+              },
+              "modeloMotor": {
+                "type": "string",
+                "example": "MD-6800"
+              },
+              "modeloAlternador": {
+                "type": "string",
+                "example": "AL-5000"
+              },
+              "painelControle": {
+                "type": "string",
+                "example": "Painel Digital com Display LCD"
+              },
+              "fabricante": {
+                "type": "string",
+                "example": "Geradores Brasil"
+              },
+              "fatorPotencia": {
+                "type": "number",
+                "format": "float",
+                "example": 0.8
+              },
+              "frequencia": {
+                "type": "integer",
+                "example": 60
+              },
+              "potenciaEletrica": {
+                "type": "integer",
+                "example": 120
+              },
+              "horimetro": {
+                "type": "integer",
+                "example": 250
+              },
+              "numeroMotor": {
+                "type": "integer",
+                "example": 987654
+              },
+              "numeroAlternador": {
+                "type": "integer",
+                "example": 123456
+              }
+            }
+          },
+          "nomeContato": {
+            "type": "string",
+            "example": "Mariana Silva"
+          },
+          "tipoContrato": {
+            "type": "string",
+            "example": "completo"
+          },
+          "possuiContrato": {
+            "type": "boolean",
+            "example": true
+          }
+                },
+        "required": ["nome", "cnpj", "email", "telefone", "endereco", "equipamento", "nomeContato", "tipoContrato", "possuiContrato"]
+      },
+      "PessoaJuridicaUpdate": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "cnpj": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "telefone": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "object",
+            "properties": {
+              "rua": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "integer"
+              },
+              "bairro": {
+                "type": "string"
+              },
+              "cidade": {
+                "type": "string"
+              }
+            }
+          },
+          "equipamento": {
+            "type": "object",
+            "properties": {
+              "tipoEquipamento": {
+                "type": "string"
+              },
+              "numero": {
+                "type": "string"
+              },
+              "anoFabricacao": {
+                "type": "integer"
+              },
+              "potencia": {
+                "type": "integer"
+              }
+            }
+          },
+          "nomeContato": {
+            "type": "string"
+          },
+          "tipoContrato": {
+            "type": "string"
+          },
+          "possuiContrato": {
+            "type": "boolean"
+          }
+        },
+        "required": []
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 25
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Erro ao processar a solicitação"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
