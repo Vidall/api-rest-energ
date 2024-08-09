@@ -1,9 +1,9 @@
+import { Request, Response } from 'express';
 import * as yup from 'yup';
 
+import { equipamentoProviders } from '../../../database/providers/clients/equipamentos';
 import { validation } from '../../../shared/middlewares/validation';
-import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { pessoaFisicaProviders } from '../../../database/providers';
 
 interface IQueryProps {
   id?: number,
@@ -27,25 +27,15 @@ export const getAll = async (req: Request<IQueryProps>, res: Response) => {
   const filter = req.query.filter?.toString() || '';
   const id = Number(req.query.id) || 0;
 
-  const result = await pessoaFisicaProviders.getAll(page, limit, filter, id);
-  const count = await pessoaFisicaProviders.count(filter);
-    
+  const result = await equipamentoProviders.getAll(page, limit, filter, id);
+
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       errors: {
-        default: result.message
+        default: 'Erro ao consultar todos registros'
       }
     });
   }
-
-  if (count instanceof Error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      errors: { default: count.message }
-    });
-  }
-
-  res.setHeader('access-control-expose-headers', 'x-total-count');
-  res.setHeader('x-total-count', count);
 
   return res.status(StatusCodes.OK).json(result);
 };

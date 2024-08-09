@@ -23,7 +23,7 @@ const bodySchema = yup.object().shape({
   admin: yup.boolean().optional(),
   pathAssinatura: yup.string().optional()
   
-}).strict().noUnknown();
+})
 
 export const updateByIdValidation = validation((getSchema) => ({  
   params: getSchema<IParamsProps>(yup.object().shape({

@@ -29,12 +29,15 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
 
     // Validar se o email é único
     if (tecnico.email) {
+      let uniqueEmail = true;
       const consultByEmail = await knex(ETableName.tecnico)
         .select('id')
         .where('email', tecnico.email)
         .first();
 
-      if (consultByEmail && consultByEmail?.id !== id) {
+      if ( consultByEmail && consultByEmail.id !== id) uniqueEmail =false
+
+      if (!uniqueEmail) {
         return {
           status: StatusCodes.BAD_REQUEST,
           message: 'E-mail já está cadastrado'
@@ -113,8 +116,8 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
       };
     } else {
       return {
-        status: StatusCodes.NO_CONTENT,
-        message: 'Registro atualizado com sucesso'
+        status: StatusCodes.OK,
+        message: 'Registro atualizado com sucesso' 
       };
     }
 

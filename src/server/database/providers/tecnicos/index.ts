@@ -4,6 +4,7 @@ import * as getById from './GetById';
 import * as deletById from './DeleteById';
 import * as updateById from './UpdateById';
 import * as getByEmail from './GetByEmail';
+import * as count from './Count';
 
 export const tecnicosProviders = {
   ...create,
@@ -11,5 +12,6 @@ export const tecnicosProviders = {
   ...getById,
   ...deletById,
   ...updateById,
-  ...getByEmail
+  ...getByEmail,
+  ...count
 };

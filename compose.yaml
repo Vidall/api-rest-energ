@@ -1,0 +1,7 @@
+services:
+  API_TS:
+    image: vidallluan/api-rest-energ
+    env_file:
+      - .env
+    ports:
+      - '${PORT}:8080'

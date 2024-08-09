@@ -26,7 +26,6 @@ export const getById = async (id: number): Promise<IResult> => {
     const finalResult = {
       ...result,
       endereco: JSON.parse(result.endereco as unknown as string),
-      equipamento: JSON.parse(result.equipamento as unknown as string)
     } as IPessoaFisica;
 
     return {

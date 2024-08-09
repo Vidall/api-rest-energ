@@ -12,6 +12,7 @@ interface Iresult {
   data?: {id: number}
 }
 
+
 export const create = async (tecnico: ITecnico, file: MulterFile): Promise<Iresult> => {
   try {
     /* TRATATIVAS*/
@@ -24,12 +25,12 @@ export const create = async (tecnico: ITecnico, file: MulterFile): Promise<Iresu
     if (tecnico.email) {
       let uniqueEmail = true;
 
-      const consult = await knex(ETableName.tecnico)
-        .select('*')
+      const consultByEmail = await knex(ETableName.tecnico)
+        .select('id')
         .where('email', tecnico.email)
         .first();
       
-      if ( consult ) uniqueEmail = false;
+      if ( consultByEmail ) uniqueEmail = false;
 
       if (!uniqueEmail) {
         return {
@@ -88,8 +89,8 @@ export const create = async (tecnico: ITecnico, file: MulterFile): Promise<Iresu
   } catch (error) {
     console.log(error);
     return {
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: 'Erro ao cadastrar o registro'
-    };
-  }
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: 'Erro ao cadastrar o registro'
+      }
+    }
 };

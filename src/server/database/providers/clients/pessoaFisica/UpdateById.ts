@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+
 import { ETableName } from '../../../ETableName';
+import { IPessoaFisica } from '../../../models';
 import { knex } from '../../../knex';
-import { IEquipamento, IPessoaFisica } from '../../../models';
 
 interface IReturn {status: number, message?: string}
 
@@ -12,7 +13,6 @@ export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promi
     const onlyNumberCPF = pessoaFisica.cpf ? pessoaFisica.cpf.replace(/\D/g, ''): pessoaFisica.cpf;
     // Endereco para stringfy
     const enderecoStringfy = pessoaFisica.endereco ? JSON.stringify(pessoaFisica.endereco) : pessoaFisica.endereco; 
-    const equipamentoStringfy: IEquipamento = JSON.stringify(pessoaFisica.equipamento) as IEquipamento; 
 
     // Validação se o e-mail é único  
     if (pessoaFisica.email){
@@ -52,7 +52,7 @@ export const updateById = async (id: number, pessoaFisica: IPessoaFisica): Promi
     
     // Atualização no BD
     const result = await knex(ETableName.pessoaFisica)
-      .update({...pessoaFisica, cpf: onlyNumberCPF, endereco: enderecoStringfy, equipamento: equipamentoStringfy})
+      .update({...pessoaFisica, cpf: onlyNumberCPF, endereco: enderecoStringfy})
       .where('id', id);
 
     if (!result) {

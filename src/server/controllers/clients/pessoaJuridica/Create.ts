@@ -4,7 +4,7 @@ import { cnpj } from 'cpf-cnpj-validator';
 
 import statusCodes, { StatusCodes } from 'http-status-codes';
 import { validation } from '../../../shared/middlewares/validation';
-import {enderecoSchema, equipamentoSchema, IpessoaJuridica} from '../../../database/models';
+import {enderecoSchema, IpessoaJuridica} from '../../../database/models';
 import { pessoaJuridicaProviders } from '../../../database/providers/clients/pessoaJuridica';
 
 const bodySchema = yup.object().shape({
@@ -15,7 +15,6 @@ const bodySchema = yup.object().shape({
   endereco: enderecoSchema.required(),
   cnpj: yup.string().required().test('cnpj', 'cnpj inválido', value => cnpj.isValid(value || '')),
   tipo: yup.string().oneOf(['juridico']).optional(),
-  equipamento: equipamentoSchema.optional(),
   nomeContato: yup.string().required(),
   possuiContrato: yup.boolean().required(),
   tipoContrato: yup.string().required().oneOf(['completo', 'padrão'])

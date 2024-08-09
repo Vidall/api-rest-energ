@@ -29,6 +29,15 @@ export const getAll = async (req: Request<IQueryProps>, res: Response) => {
   const id = Number(req.query.id) || 0;
 
   const result = await tecnicosProviders.getAll(page, limit, filter, id);
+  const count = await tecnicosProviders.count(filter);
+
+  if (count instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: count.message
+      }
+    });
+  }
 
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -39,7 +48,7 @@ export const getAll = async (req: Request<IQueryProps>, res: Response) => {
   }
 
   res.setHeader('access-control-expose-headers', 'x-total-count');
-  res.setHeader('x-total-count', 1);
+  res.setHeader('x-total-count', count);
 
   return res.status(StatusCodes.OK).json(result);
 };

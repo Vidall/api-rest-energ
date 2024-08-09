@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { ETableName } from '../../../ETableName';
 import { knex } from '../../../knex';
-import { IEquipamento, IpessoaJuridica } from '../../../models';
+import { IpessoaJuridica } from '../../../models';
 
 interface IResult {
   status: StatusCodes
@@ -26,7 +26,6 @@ export const getById = async (id: number): Promise<IResult> => {
     const finalResult = {
       ...result,
       endereco: JSON.parse(result.endereco as unknown as string),
-      equipamento: JSON.parse(result.equipamento as unknown as string) as IEquipamento,
     } as IpessoaJuridica;
 
     return {
