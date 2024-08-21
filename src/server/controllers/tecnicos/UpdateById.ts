@@ -42,7 +42,7 @@ export const updateById = async (req: Request, res: Response) => {
     /*eslint-disable-next-line*/
   const bucketName = process.env.BUCKET_NAME;
     // Redimensionando o tamanho da imagem no buffer com a lib sharp
-    const buffer = await sharp(req.file?.buffer).resize({width: 300, height: 300, fit: 'contain'}).toBuffer();
+    const buffer = await sharp(req.file?.buffer).resize({width: 300, height: 300}).toBuffer();
 
     // Params para serem enviados
     const contentType = req.file?.mimetype;
