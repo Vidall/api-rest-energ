@@ -21,9 +21,9 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
     let pathAssinatura = '';    
     if (file) {
       /*eslint-disable-next-line*/
-    const bucketName = process.env.BUCKET_NAME;
+      const bucketName = process.env.BUCKET_NAME;
       /*eslint-disable-next-line*/
-    const region = process.env.REGION;
+      const region = process.env.REGION;
       pathAssinatura = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;      
     }
 
@@ -117,7 +117,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
     } else {
       return {
         status: StatusCodes.OK,
-        message: 'Registro atualizado com sucesso' 
+        message: 'Registro atualizado com sucesso'
       };
     }
 

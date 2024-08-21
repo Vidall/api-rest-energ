@@ -60,6 +60,6 @@ export const updateById = async (req: Request, res: Response) => {
   }
 
   const result = await tecnicosProviders.updateById(id, tecnico, file);
-
+  
   return res.status(result.status).json(result);
 };
