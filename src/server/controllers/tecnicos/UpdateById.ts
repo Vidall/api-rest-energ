@@ -4,9 +4,10 @@ import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { tecnicosProviders } from '../../database/providers/tecnicos';
 import { MulterFile, IUpdateTecnico } from '../../database/models';
-import { randomImageName, s3 } from '../../shared/service/S3Service';
+import { s3 } from '../../shared/service/S3Service';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
+import crypto from 'crypto';
 
 interface IParamsProps {
   id?: number
@@ -23,7 +24,7 @@ const bodySchema = yup.object().shape({
   admin: yup.boolean().optional(),
   pathAssinatura: yup.string().optional()
   
-})
+});
 
 export const updateByIdValidation = validation((getSchema) => ({  
   params: getSchema<IParamsProps>(yup.object().shape({
@@ -33,7 +34,7 @@ export const updateByIdValidation = validation((getSchema) => ({
 }));
 
 export const updateById = async (req: Request, res: Response) => {
-  const id = Number(req.params.id || 0) ;
+  const id = Number(req.params.id) ;
   const tecnico = {...req.body};
   const file: MulterFile = req.file!;
 
@@ -46,6 +47,10 @@ export const updateById = async (req: Request, res: Response) => {
     // Params para serem enviados
     const contentType = req.file?.mimetype;
 
+    const getRandomImageName = (bytes = 32): string => crypto.randomBytes(bytes).toString('hex');
+
+    const randomImageName = `${getRandomImageName()}_${Date.now()}`;
+
     const params = {    
       Bucket: bucketName,
       Key: randomImageName,
@@ -57,9 +62,14 @@ export const updateById = async (req: Request, res: Response) => {
 
     // Envio ao S3
     await s3.send(command);
+    
+    const result = await tecnicosProviders.updateById(id, tecnico, file, randomImageName || '');
+  
+    return res.status(result.status).json(result);
   }
 
-  const result = await tecnicosProviders.updateById(id, tecnico, file);
+  const result = await tecnicosProviders.updateById(id, tecnico);
   
   return res.status(result.status).json(result);
+
 };
