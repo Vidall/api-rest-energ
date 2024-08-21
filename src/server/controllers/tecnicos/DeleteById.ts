@@ -29,5 +29,5 @@ export const deleteById = async (req: Request, res: Response) => {
     });
   }
 
-  return res.status(StatusCodes.OK).json(result);
+  return res.status(StatusCodes.NO_CONTENT).json(result);
 };

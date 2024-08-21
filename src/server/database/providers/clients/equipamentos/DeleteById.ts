@@ -7,10 +7,11 @@ interface IReturn  {
   message: string
 }
 
-export const deleteById = async (id: number): Promise< IReturn> => {
+export const deleteById = async (id: number, tipo: 'fisico' | 'juridico'): Promise< IReturn> => {
   try {
     const result = await knex(ETableName.equipamento)
-      .where('id', id)
+      .where('idCliente', id)
+      .andWhere('tipo', tipo)      
       .del();
 
     if (result > 0) {

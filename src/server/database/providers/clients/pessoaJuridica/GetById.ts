@@ -18,8 +18,8 @@ export const getById = async (id: number): Promise<IResult> => {
 
     if (!result) {
       return {
-        status: StatusCodes.BAD_REQUEST,
-        message: 'Pessoa fisica não localizada'
+        status: StatusCodes.NOT_FOUND,
+        message: 'Pessoa juridica não localizada'
       };
     };
 
