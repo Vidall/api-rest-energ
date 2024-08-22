@@ -12,7 +12,6 @@ export async function up(knex: Knex): Promise<void> {
       table.string('telefone').notNullable();
       table.json('endereco').notNullable();
       table.string('tipo').notNullable().defaultTo('fisico');
-      table.json('equipamento');
       table.string('nomeContato');
       table.string('tipoContrato');
       table.boolean('possuiContrato');

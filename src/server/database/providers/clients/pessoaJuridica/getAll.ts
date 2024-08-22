@@ -1,6 +1,6 @@
 import { ETableName } from '../../../ETableName';
 import { knex } from '../../../knex';
-import { Endereco, IEquipamento, IpessoaJuridica } from '../../../models';
+import { Endereco, IpessoaJuridica } from '../../../models';
 
 export const getAll = async (page: number, limit: number, filter: string, id = 0): Promise<IpessoaJuridica[] | Error> => {
   try {
@@ -27,11 +27,9 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
           ...result.map(item => ({
             ...item,
             endereco: JSON.parse(item.endereco as unknown as string) as Endereco,
-            equipamento: JSON.parse(item.equipamento as unknown as string) as IEquipamento,
           })),
           {
             ...resultById,
-            equipamento: JSON.parse(resultById.equipamento as unknown as string) as IEquipamento,
           },
         ] as IpessoaJuridica[];
       }
@@ -40,7 +38,6 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
     const finalResult = result.map(item => ({
       ...item,
       endereco: JSON.parse(item.endereco as unknown as string),
-      equipamento: JSON.parse(item.equipamento as unknown as string) as IEquipamento,
     })) as IpessoaJuridica[];
 
     return finalResult;

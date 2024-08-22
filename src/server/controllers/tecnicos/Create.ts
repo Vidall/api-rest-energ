@@ -54,20 +54,25 @@ export const create = async (req: Request, res: Response) => {
   const command = new PutObjectCommand(params);
 
   // Envio ao S3
-  try {
-    const uploadResult = await s3.send(command);
-    console.log('Resultado do upload:', uploadResult);
-    
-  } catch (error) {
-    console.error('Erro ao fazer o upload da imagem:', error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      errors: {
-        default: 'Erro ao enviar a imagem para o S3'
-      }
-    });
-  }
   
   const result = await tecnicosProviders.create(body, file);
+
+  if ( result.status >= 200 && result.status < 300  ) {
+    try {
+      const uploadResult = await s3.send(command);
+      console.log('Resultado do upload:', uploadResult);
+      
+    } catch (error) {
+      console.error('Erro ao fazer o upload da imagem:', error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: {
+          default: 'Erro ao enviar a imagem para o S3'
+        }
+      });
+    }
+  }
+
+
 
   res.status(result.status).json({...result});
 };

@@ -1,7 +1,7 @@
-import { StatusCodes } from 'http-status-codes';
+import { IpessoaJuridica } from '../../../models';
 import { ETableName } from '../../../ETableName';
+import { StatusCodes } from 'http-status-codes';
 import { knex } from '../../../knex';
-import { IEquipamento, IpessoaJuridica } from '../../../models';
 
 interface IReturn {status: number, message?: string}
 
@@ -10,8 +10,6 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
     
     // CNPJ somente com numeros
     const onlyNumberCNPJ = pessoaJuridica.cnpj ? pessoaJuridica.cnpj.replace(/\D/g, '') : pessoaJuridica.cnpj;
-    // Endereco para JSON stringFy
-    const equipamentoStringFy = JSON.stringify(pessoaJuridica.equipamento) as IEquipamento; 
 
     // Validação se o e-mail é único  
     if (pessoaJuridica.email){
@@ -51,7 +49,7 @@ export const updateById = async (id: number, pessoaJuridica: IpessoaJuridica): P
 
     // Chamada para atualizar
     const result = await knex(ETableName.pessoaJuridica)
-      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ, equipamento: equipamentoStringFy})
+      .update({...pessoaJuridica, cnpj: onlyNumberCNPJ})
       .where('id', id);
 
     // Validação se é objeto

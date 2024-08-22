@@ -4,7 +4,7 @@ import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { pessoaFisicaProviders } from '../../../database/providers';
-import { enderecoSchema, equipamentoSchema, IPessoaFisicaUpdate } from '../../../database/models';
+import { enderecoSchema, IPessoaFisicaUpdate } from '../../../database/models';
 
 interface IParamsProps {
   id?: number
@@ -17,7 +17,6 @@ const bodySchema = yup.object().shape({
   telefone: yup.string().optional().matches(/^\d{10,11}$/, 'Telefone inválido'),
   email: yup.string().optional().email(),
   tipo: yup.string().oneOf(['fisico']).optional(),
-  equipamento: equipamentoSchema.optional(),
   nomeContato: yup.string().optional(),
   possuiContrato: yup.boolean().optional(),
   tipoContrato: yup.string().optional().oneOf(['completo', 'padrão'])

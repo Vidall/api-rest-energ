@@ -2,5 +2,6 @@
 export enum ETableName{
   pessoaFisica = 'pessoaFisica',
   pessoaJuridica = 'pessoaJuridica',
-  tecnico= 'tecnico'
+  tecnico= 'tecnico',
+  equipamento='equipamento'
 } 

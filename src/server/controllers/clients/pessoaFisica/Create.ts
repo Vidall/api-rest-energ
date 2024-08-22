@@ -4,7 +4,7 @@ import { cpf } from 'cpf-cnpj-validator';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { pessoaFisicaProviders } from '../../../database/providers';
-import { enderecoSchema,equipamentoSchema,IPessoaFisica } from '../../../database/models';
+import { enderecoSchema,IPessoaFisica } from '../../../database/models';
 
 const bodySchema = yup.object().shape({
   id: yup.number().integer().moreThan(0).optional(),
@@ -14,7 +14,7 @@ const bodySchema = yup.object().shape({
   endereco: enderecoSchema.required(),
   cpf: yup.string().required().test('cpf', 'cpf inválido', value => cpf.isValid(value || '')),
   tipo: yup.string().oneOf(['fisico']).optional(),
-  equipamento: equipamentoSchema.optional(),
+
   nomeContato: yup.string().required(),
   possuiContrato: yup.boolean().required(),
   tipoContrato: yup.string().required().oneOf(['completo', 'padrão'])

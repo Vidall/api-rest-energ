@@ -8,7 +8,7 @@ export const equipamentoSchema = yup.object().shape({
   motor: yup.string().required(),
   alternador: yup.string().required(),
   uscaModelo: yup.string().required(),
-  tensao: yup.string().required(),
+  tensao: yup.number().required(),
   corrente: yup.number().required(),
   modeloMotor: yup.string().required(),
   modeloAlternador: yup.string().required(),

@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
+
 import { ETableName } from '../ETableName';
-import { IEquipamento, IpessoaJuridica } from '../models';
+import { IpessoaJuridica } from '../models';
 
 export const seed = async (knex: Knex) => {
   // Validação antes de gerar a seed
@@ -18,34 +19,11 @@ export const seed = async (knex: Knex) => {
     ...item,
     cnpj: item.cnpj.replace(/\D/g, ''),
     endereco: JSON.stringify(item.endereco),
-    equipamento: JSON.stringify(Equipamento) as IEquipamento,
     nomeContato: 'Andre',
     possuiContrato: true,
     tipoContrato: 'padrão'
   }));
   await knex(ETableName.pessoaJuridica).insert(insertToPessoaJuridica);
-};
-
-const Equipamento = {
-  'tipoEquipamento': 'Gerador Elétrico',
-  'numero': 'GE-123456',
-  'anoFabricacao': 2020,
-  'potencia': 150,
-  'motor': 'Motor Diesel 6.8L',
-  'alternador': 'Alternador Brushless',
-  'uscaModelo': 'USC-Model-X',
-  'tensao': '380V',
-  'corrente': 400,
-  'modeloMotor': 'MD-6800',
-  'modeloAlternador': 'AL-5000',
-  'painelControle': 'Painel Digital com Display LCD',
-  'fabricante': 'Geradores Brasil',
-  'fatorPotencia': 0.8,
-  'frequencia': 60,
-  'potenciaEletrica': 120,
-  'horimetro': 250,
-  'numeroMotor': 987654,
-  'numeroAlternador': 123456
 };
 
 // 20 Pessoas fisica IA

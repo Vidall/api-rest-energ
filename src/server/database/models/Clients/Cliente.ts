@@ -13,18 +13,25 @@ export interface IEquipamento {
   motor?: string,
   alternador?: string,
   uscaModelo?: string,
-  tensao?: string,
+  tensao?: number,
   corrente?: number,
   modeloMotor?: string,
   modeloAlternador?: string,
   painelControle?: string,
   fabricante?: string,
-  fatorPotencia?: number,
-  frequencia?: number,
+  fatorPotencia?: number, // vai sair
+  frequencia?: number, // vai sair
   potenciaEletrica?: number,
   horimetro?: number,
   numeroMotor?: number,
   numeroAlternador?: number,
+}
+
+export interface IEquipamentoProps {
+  id?: number,
+  tipo: string,
+  equipamento: IEquipamento
+  idCliente: number
 }
 
 export interface IPessoaFisica{
@@ -37,7 +44,6 @@ export interface IPessoaFisica{
   nomeContato: string,
   possuiContrato: boolean,
   tipoContrato: string
-  equipamento?: IEquipamento
 }
 export interface IPessoaFisicaUpdate{
   nome?: string,
@@ -48,7 +54,6 @@ export interface IPessoaFisicaUpdate{
   nomeContato?: string,
   possuiContrato?: boolean,
   tipoContrato?: string
-  equipamento?: IEquipamento
 }
 
 export interface IpessoaJuridica{
@@ -62,7 +67,6 @@ export interface IpessoaJuridica{
   nomeContato: string,
   possuiContrato: boolean,
   tipoContrato: string
-  equipamento?: IEquipamento
 }
 export interface IpessoaJuridicaUpdate{
   id?: number
@@ -75,7 +79,6 @@ export interface IpessoaJuridicaUpdate{
   nomeContato?: string,
   possuiContrato?: boolean,
   tipoContrato?: string
-  equipamento?: IEquipamento
 }
 
 /*eslint-disable*/

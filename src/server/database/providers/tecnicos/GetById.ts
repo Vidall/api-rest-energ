@@ -9,7 +9,7 @@ export const getById = async (id: number): Promise<Omit<ITecnico, 'senha'>[] | E
       .where('id', id)
       .first();
     if (typeof resultById === 'object') {      
-      return [resultById];
+      return resultById;
     } else {
       return [];
     }

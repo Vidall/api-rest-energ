@@ -4,37 +4,39 @@ import { knex } from '../../knex';
 import { ETableName } from '../../ETableName';
 import { passWordCrypto } from '../../../shared/service';
 import { MulterFile } from '../../models/tecnicos/Multer';
-import { randomImageName } from '../../../shared/service/S3Service';
 
 interface IResult {
   status: StatusCodes,
   message?: string 
 }
 
-export const updateById = async (id: number, tecnico: IUpdateTecnico, file: MulterFile): Promise<IResult> => {
+export const updateById = async (id: number, tecnico: IUpdateTecnico, file?: MulterFile, nameArquivo?: string): Promise<IResult> => {
   try {
 
     // CPF somente com numeros
     const onlyNumberCPF = tecnico.cpf?.replace(/\D/g, '');
 
     // Pegar o caminho da assinatura
-    let pathAssinatura = '';    
+    let pathAssinatura = tecnico.pathAssinatura;    
     if (file) {
       /*eslint-disable-next-line*/
-    const bucketName = process.env.BUCKET_NAME;
+      const bucketName = process.env.BUCKET_NAME;
       /*eslint-disable-next-line*/
-    const region = process.env.REGION;
-      pathAssinatura = `https://${bucketName}.s3.${region}.amazonaws.com/${randomImageName}`;      
+      const region = process.env.REGION;
+      pathAssinatura = `https://${bucketName}.s3.${region}.amazonaws.com/${nameArquivo}`;      
     }
 
     // Validar se o email é único
     if (tecnico.email) {
+      let uniqueEmail = true;
       const consultByEmail = await knex(ETableName.tecnico)
         .select('id')
         .where('email', tecnico.email)
         .first();
 
-      if (consultByEmail && consultByEmail?.id !== id) {
+      if ( consultByEmail && consultByEmail.id !== id) uniqueEmail =false;
+
+      if (!uniqueEmail) {
         return {
           status: StatusCodes.BAD_REQUEST,
           message: 'E-mail já está cadastrado'
@@ -64,7 +66,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
       let resultPassWordCrypto = '';
       const consultPassWord = await knex(ETableName.tecnico)
         .select('senha')
-        .where('id', id)
+        .where('id', Number(id))
         .first();
 
       if (consultPassWord) resultPassWordCrypto = consultPassWord.senha;
@@ -85,7 +87,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
 
         const result = await knex(ETableName.tecnico)
           .update({...tecnico, cpf: onlyNumberCPF, senha: hashPassword, pathAssinatura})
-          .where('id', id);
+          .where('id', Number(id));
 
         if (!result) {
           return {
@@ -101,10 +103,10 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
       }
     }
 
-    //Chamada do update
+    //Chamada do updat
     const result = await knex(ETableName.tecnico)
       .update({...tecnico, cpf: onlyNumberCPF, pathAssinatura})
-      .where('id', id);
+      .where('id', Number(id));
 
     if (!result) {
       return {
@@ -113,7 +115,7 @@ export const updateById = async (id: number, tecnico: IUpdateTecnico, file: Mult
       };
     } else {
       return {
-        status: StatusCodes.NO_CONTENT,
+        status: StatusCodes.OK,
         message: 'Registro atualizado com sucesso'
       };
     }
