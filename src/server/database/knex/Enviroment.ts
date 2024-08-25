@@ -1,9 +1,9 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 import path from 'path';
 
 /*eslint-disable*/
 
-export const development: Knex.Config= {
+export const development: Knex.Config = {
   client: 'sqlite3',
   useNullAsDefault: true,
   connection: {
@@ -29,5 +29,18 @@ export const test: Knex.Config = {
 };
 
 export const production: Knex.Config = {
-  ...development
+  client: 'mysql2',
+  connection: {
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT), 
+    user: process.env.MYSQL_USER, 
+    password: process.env.MYSQL_PASSWORD, 
+    database: process.env.MYSQL_DATABASE 
+  },
+  migrations: {
+    directory: path.resolve(__dirname, '..', 'migrations')
+  },
+  seeds: {
+    directory: path.resolve(__dirname, '..', 'seeds')
+  }
 };

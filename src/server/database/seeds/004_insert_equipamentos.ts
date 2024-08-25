@@ -9,10 +9,10 @@ export const seed = async (knex: Knex) => {
     '* as count'
   );
   /*eslint-disable-next-line*/
-  const runDev = process.env.NODE_ENV !== 'production'? true : false;
+  // const runDev = process.env.NODE_ENV !== 'production'? true : false;
 
   if (!Number.isInteger(count) || Number(count) > 0) return;
-  if (!runDev) return;
+  // if (!runDev) return;
 
   const insertToEquipamentos: IEquipamentoProps[] = equipamentos.map((item) => ({
     ...item,

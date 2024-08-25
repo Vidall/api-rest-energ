@@ -13,7 +13,7 @@ server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SwaggerDocs));
 server.use(express.json());
 server.use(cors({
   /*eslint-disable no-undef*/
-  origin: process.env.BASE_URL_FRONT
+  origin: '*'
 }));
 server.use(router);
 

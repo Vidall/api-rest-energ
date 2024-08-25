@@ -10,7 +10,8 @@ const getEnviroment = () => {
     case 'production':
       return production;
     default:
-      return development;}
+      return development;
+  }
 };
 
 export const knex = Knex(getEnviroment());

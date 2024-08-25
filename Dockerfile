@@ -3,12 +3,16 @@ FROM node:20-alpine
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
 
+COPY . .
 # Copia o restante do código para o diretório de trabalho
 COPY package.json .
 
+# Copia o script wait-for-it.sh para o container
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
 
 # Copia o restante do código para o diretório de trabalho
-COPY . .
 
 # Instala as dependências
 RUN npm install
@@ -17,4 +21,4 @@ RUN npm install
 EXPOSE 3001
 
 # Comando para iniciar o servidor
-CMD ["npm", "run", "production"]
+CMD ["wait-for-it.sh", "mysql:3306", "--", "npm", "run", "production"]
