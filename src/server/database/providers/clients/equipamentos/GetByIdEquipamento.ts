@@ -4,35 +4,43 @@ import { knex } from '../../../knex';
 import { ETableName } from '../../../ETableName';
 
 interface IResult {
-  status: StatusCodes
-  message: string,
-  data?: IEquipamento
+  status: StatusCodes;
+  message: string;
+  data?: IEquipamento;
 }
 
 export const getByIdEquipamento = async (id: number): Promise<IResult> => {
-  const result = await knex(ETableName.equipamento)
-    .select('*')
-    .where('id', Number(id));
+  try {
+    // Consulta o registro do equipamento pelo ID
+    const result = await knex(ETableName.equipamento)
+      .select('*')
+      .where('id', id)
+      .first(); // Usa .first() para pegar um único resultado
 
-  if (!result || result.length === 0) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      message: 'Pessoa fisica não localizada'
-    };
-  };
-  const finalResult = result.map(item => {
-    const res = {
-      ...item,
-      equipamento: JSON.parse(item.equipamento as unknown as string)
+    // Verifica se o resultado foi encontrado
+    if (!result) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        message: 'Equipamento não localizado'
+      };
+    }
+
+    // Se o campo 'equipamento' é JSON nativo, não é necessário JSON.parse
+    const finalResult = {
+      ...result,
+      equipamento: result.equipamento
     } as IEquipamento;
 
-    return res;
-  });
-
-  return {
-    status: StatusCodes.OK,
-    message: 'Pessoa Fisica encontrada',
-    data: finalResult[0]
-  };
+    return {
+      status: StatusCodes.OK,
+      message: 'Equipamento encontrado',
+      data: finalResult
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+      message: 'Erro ao localizar equipamento'
+    };
+  }
 };
-

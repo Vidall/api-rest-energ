@@ -4,33 +4,36 @@ import { knex } from '../../../knex';
 import { IPessoaFisica } from '../../../models';
 
 interface IResult {
-  status: StatusCodes
-  message: string,
-  data?: IPessoaFisica 
+  status: StatusCodes;
+  message: string;
+  data?: IPessoaFisica;
 }
 
 export const getById = async (id: number): Promise<IResult> => {
   try {
+    // Consulta o registro da pessoa física pelo ID
     const result = await knex(ETableName.pessoaFisica)
       .select('*')
       .where('id', id)
       .first();
 
+    // Verifica se o resultado foi encontrado
     if (!result) {
       return {
-        status: StatusCodes.BAD_REQUEST,
-        message: 'Pessoa fisica não localizada'
+        status: StatusCodes.NOT_FOUND, // Código de status apropriado para recurso não encontrado
+        message: 'Pessoa física não localizada'
       };
-    };
+    }
 
+    // Se o campo 'endereco' é JSON nativo, não é necessário JSON.parse
     const finalResult = {
       ...result,
-      endereco: JSON.parse(result.endereco as unknown as string),
+      endereco: result.endereco as IPessoaFisica['endereco'] // Ajuste dependendo do tipo de 'endereco'
     } as IPessoaFisica;
 
     return {
       status: StatusCodes.OK,
-      message: 'Pessoa Fisica encontrada',
+      message: 'Pessoa física encontrada',
       data: finalResult
     };
   } catch (error) {
