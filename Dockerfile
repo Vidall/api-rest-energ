@@ -15,5 +15,5 @@ RUN npm install
 EXPOSE 3001
 
 # Comando para iniciar o servidor, aguardando o MySQL
-CMD ["npm", "run", "production"]
+CMD ["npm", "run", "knex:migrate", "--", "npm", "run", "production"]
 
