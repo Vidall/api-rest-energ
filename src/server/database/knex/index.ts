@@ -9,6 +9,8 @@ const getEnviroment = () => {
       return test;
     case 'production':
       return production;
+    case 'development':
+      return development;
     default:
       return development;
   }

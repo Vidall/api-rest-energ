@@ -10,7 +10,9 @@ const bodySchema = yup.object().shape({
   id: yup.number().integer().moreThan(0).optional(),
   tipo: yup.string().oneOf([ETipoCliente.fisico, ETipoCliente.juridico]).required(),
   equipamento: equipamentoSchema.required(),
-  idCliente: yup.number().required().moreThan(0)
+  idCliente: yup.number().required().moreThan(0),
+  horimetro_atual: yup.number().optional(),
+  KWH_atual: yup.number().optional()
 }).strict().noUnknown();
 
 export const createValidation = validation((getSchema) => ({

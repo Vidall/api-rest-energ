@@ -1,6 +1,6 @@
 export interface Endereco {
   rua: string,
-  numero: number,
+  numero: string,
   bairro: string,
   cidade: string,
 }
@@ -8,30 +8,33 @@ export interface Endereco {
 export interface IEquipamento {
   tipoEquipamento?: string
   numero?: string,
-  anoFabricacao?: number,
-  potencia?: number,
+  anoFabricacao?: string,
+  potencia?: string,
   motor?: string,
   alternador?: string,
   uscaModelo?: string,
-  tensao?: number,
-  corrente?: number,
+  tensao?: string,
+  corrente?: string,
   modeloMotor?: string,
   modeloAlternador?: string,
   painelControle?: string,
   fabricante?: string,
-  fatorPotencia?: number, // vai sair
-  frequencia?: number, // vai sair
-  potenciaEletrica?: number,
+  fatorPotencia?: string, // vai sair
+  frequencia?: string, // vai sair
+  potenciaEletrica?: string,
   horimetro?: number,
-  numeroMotor?: number,
-  numeroAlternador?: number,
+  numeroMotor?: string,
+  numeroAlternador?: string,
+  KWH?: number
 }
 
 export interface IEquipamentoProps {
   id?: number,
   tipo: string,
   equipamento: IEquipamento
-  idCliente: number
+  idCliente: number,
+  horimetro_atual?: number,
+  KWH_atual?: number,
 }
 
 export interface IPessoaFisica{

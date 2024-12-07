@@ -23,11 +23,11 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
         return [
           ...result.map(item => ({
             ...item,
-            equipamento: JSON.parse(item.equipamento as unknown as string) as IEquipamento,
+            equipamento: typeof item.equipamento === 'string' ? JSON.parse(item.equipamento) : item.equipamento,
           })),
           {
             ...resultById,
-            equipamento: JSON.parse(resultById.equipamento as unknown as string) as IEquipamento
+            equipamento: resultById.equipamento as IEquipamento
           },
         ] as IEquipamentoProps[];
       }
@@ -36,7 +36,7 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
     // converter os endereco para JSON Stringfy
     const finalResult = result.map(item => ({
       ...item,
-      equipamento: JSON.parse(item.equipamento as unknown as string)
+      equipamento: typeof item.equipamento === 'string' ? JSON.parse(item.equipamento) : item.equipamento
     })) as IEquipamentoProps[];
 
     return finalResult;

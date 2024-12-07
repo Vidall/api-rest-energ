@@ -35,7 +35,7 @@ const pessoasFisica = [
     telefone: '24999318788',
     endereco: {
       rua: 'Rua Francelino Alves de Lima',
-      numero: 700,
+      numero: '700',
       bairro: 'Nova Angra',
       cidade: 'Angra dos Reis',
     },
@@ -47,7 +47,7 @@ const pessoasFisica = [
     telefone: '21999456789',
     endereco: {
       rua: 'Rua das Flores',
-      numero: 123,
+      numero: '123',
       bairro: 'Centro',
       cidade: 'Angra dos Reis',
     },
@@ -59,7 +59,7 @@ const pessoasFisica = [
     telefone: '21999234567',
     endereco: {
       rua: 'Rua do Sol',
-      numero: 456,
+      numero: '456',
       bairro: 'Praia do Anil',
       cidade: 'Angra dos Reis',
     },
@@ -71,7 +71,7 @@ const pessoasFisica = [
     telefone: '21999876543',
     endereco: {
       rua: 'Rua da Paz',
-      numero: 789,
+      numero: '789',
       bairro: 'Balneário',
       cidade: 'Angra dos Reis',
     },
@@ -83,7 +83,7 @@ const pessoasFisica = [
     telefone: '21999543210',
     endereco: {
       rua: 'Rua da Amizade',
-      numero: 101,
+      numero: '101',
       bairro: 'Jacuecanga',
       cidade: 'Angra dos Reis',
     },
@@ -95,7 +95,7 @@ const pessoasFisica = [
     telefone: '21999321098',
     endereco: {
       rua: 'Rua das Estrelas',
-      numero: 202,
+      numero: '202',
       bairro: 'Vila Velha',
       cidade: 'Angra dos Reis',
     },
@@ -107,7 +107,7 @@ const pessoasFisica = [
     telefone: '21999765432',
     endereco: {
       rua: 'Rua das Palmeiras',
-      numero: 305,
+      numero: '305',
       bairro: 'Marinas',
       cidade: 'Angra dos Reis',
     },
@@ -119,7 +119,7 @@ const pessoasFisica = [
     telefone: '21999123456',
     endereco: {
       rua: 'Rua das Orquídeas',
-      numero: 407,
+      numero: '407',
       bairro: 'Centro',
       cidade: 'Angra dos Reis',
     },
@@ -131,7 +131,7 @@ const pessoasFisica = [
     telefone: '21999234567',
     endereco: {
       rua: 'Rua das Acácias',
-      numero: 509,
+      numero: '509',
       bairro: 'Nova Angra',
       cidade: 'Angra dos Reis',
     },
@@ -143,7 +143,7 @@ const pessoasFisica = [
     telefone: '21999876543',
     endereco: {
       rua: 'Rua das Margaridas',
-      numero: 611,
+      numero: '611',
       bairro: 'Praia do Anil',
       cidade: 'Angra dos Reis',
     },
@@ -155,7 +155,7 @@ const pessoasFisica = [
     telefone: '21999765432',
     endereco: {
       rua: 'Rua dos Girassóis',
-      numero: 713,
+      numero: '713',
       bairro: 'Centro',
       cidade: 'Angra dos Reis',
     },
@@ -167,7 +167,7 @@ const pessoasFisica = [
     telefone: '21999123456',
     endereco: {
       rua: 'Rua das Azaleias',
-      numero: 815,
+      numero: '815',
       bairro: 'Balneário',
       cidade: 'Angra dos Reis',
     },
@@ -179,7 +179,7 @@ const pessoasFisica = [
     telefone: '21999234567',
     endereco: {
       rua: 'Rua dos Lírios',
-      numero: 917,
+      numero: '917',
       bairro: 'Nova Angra',
       cidade: 'Angra dos Reis',
     },
@@ -191,7 +191,7 @@ const pessoasFisica = [
     telefone: '21999876543',
     endereco: {
       rua: 'Rua das Rosas',
-      numero: 1019,
+      numero: '1019',
       bairro: 'Praia do Anil',
       cidade: 'Angra dos Reis',
     },
@@ -203,7 +203,7 @@ const pessoasFisica = [
     telefone: '21999765432',
     endereco: {
       rua: 'Rua dos Cravos',
-      numero: 1121,
+      numero: '1121',
       bairro: 'Centro',
       cidade: 'Angra dos Reis',
     },
@@ -215,7 +215,7 @@ const pessoasFisica = [
     telefone: '21999123456',
     endereco: {
       rua: 'Rua dos Ipês',
-      numero: 1223,
+      numero: '1223',
       bairro: 'Balneário',
       cidade: 'Angra dos Reis',
     },
@@ -227,7 +227,7 @@ const pessoasFisica = [
     telefone: '21999234567',
     endereco: {
       rua: 'Rua das Violetas',
-      numero: 1325,
+      numero: '1325',
       bairro: 'Nova Angra',
       cidade: 'Angra dos Reis',
     },
@@ -239,7 +239,7 @@ const pessoasFisica = [
     telefone: '21999876543',
     endereco: {
       rua: 'Rua das Gardênias',
-      numero: 1427,
+      numero: '1427',
       bairro: 'Praia do Anil',
       cidade: 'Angra dos Reis',
     },
@@ -251,7 +251,7 @@ const pessoasFisica = [
     telefone: '21999765432',
     endereco: {
       rua: 'Rua das Hortências',
-      numero: 1529,
+      numero: '1529',
       bairro: 'Centro',
       cidade: 'Angra dos Reis',
     },
@@ -263,7 +263,7 @@ const pessoasFisica = [
     telefone: '21999123456',
     endereco: {
       rua: 'Rua das Alamandas',
-      numero: 1631,
+      numero: '1631',
       bairro: 'Balneário',
       cidade: 'Angra dos Reis',
     },
