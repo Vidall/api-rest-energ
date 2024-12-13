@@ -20,3 +20,10 @@ export interface IUpdateTecnico {
   admin?: boolean,
   pathAssinatura?: string
 }
+
+const Time = {
+  Hour:  'Horas',
+  Min: 'Min'
+};
+
+console.log(Time);
