@@ -3,57 +3,71 @@ import { ETableName } from '../../../ETableName';
 import { knex } from '../../../knex';
 import { IEquipamento, IEquipamentoProps } from '../../../models';
 
-interface IReturn {status: number, message?: string}
+interface IReturn {
+  status: number;
+  message?: string;
+}
 
-export const updateById = async (id: number, equipamento: IEquipamentoProps): Promise< IReturn > => {
+export const updateById = async (id: number, equipamentoRecebido: IEquipamentoProps): Promise<IReturn> => {
   try {
-
-    const [ResultEquipamento] = await knex(ETableName.equipamento)
+    const [resultEquipamento] = await knex(ETableName.equipamento)
       .select('*')
       .where('id', id);
 
-    if (!ResultEquipamento) {
+    if (!resultEquipamento) {
       return {
         status: StatusCodes.NOT_FOUND,
         message: 'Registro não localizado',
       };
     }
-    
-    const horimetroAtualRecebido = equipamento.horimetro_atual;
-    const kwhAtualRecebido = equipamento.KWH_atual;
 
-    const horimetroAtualCadastrado = ResultEquipamento.horimetro_atual;
-    const kwhAtualCadastrado = ResultEquipamento.KWH_atual
+    const equipamentoBancoObject = JSON.parse(resultEquipamento.equipamento as string) as IEquipamento;
 
-    const equipamentoCliente: IEquipamento = equipamento.equipamento
-    let equipamentoStringfy: IEquipamento = equipamentoCliente;
+    // Valores existentes no banco de dados
+    const horimetroAtualBanco = resultEquipamento.horimetro_atual ?? 0;
+    const kwhAtualBanco = resultEquipamento.KWH_atual ?? 0;
 
-    // Equipamento para stringfy
-    if (horimetroAtualRecebido && horimetroAtualRecebido !== horimetroAtualCadastrado) {
-      equipamentoStringfy = JSON.stringify({...ResultEquipamento.equipamento, horimetro: horimetroAtualCadastrado} as IEquipamento) as IEquipamento;
-  
-    } else if(kwhAtualRecebido && kwhAtualRecebido !== kwhAtualCadastrado) {
-      equipamentoStringfy = JSON.stringify({...ResultEquipamento.equipamento, KWH: kwhAtualCadastrado }as IEquipamento) as IEquipamento;
-  
-    }
-    
-    if (horimetroAtualRecebido && horimetroAtualRecebido <= horimetroAtualCadastrado!) {
-      return {
-        status: StatusCodes.BAD_REQUEST,
-        message: `O horimetro atual é menor ou igual que o horimetro cadastrado, ${ResultEquipamento.horimetro_atual!}`,
-      };
+    // Valores recebidos
+    const horimetroAtualRecebido = equipamentoRecebido.horimetro_atual;
+    const kwhAtualRecebido = equipamentoRecebido.KWH_atual;
+
+    // Atualizando valores antigos e atuais
+    const horimetroAntigo = horimetroAtualRecebido && horimetroAtualRecebido !== horimetroAtualBanco ? horimetroAtualBanco : equipamentoBancoObject.horimetro ?? 0;
+    const kwhAntigo = kwhAtualRecebido && kwhAtualRecebido !== kwhAtualBanco ? kwhAtualBanco : equipamentoBancoObject.KWH ?? 0;
+
+    if (horimetroAtualRecebido) {
+      if (horimetroAtualRecebido <= horimetroAtualBanco || horimetroAtualRecebido <= equipamentoBancoObject.horimetro!) {      
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: `O valor do horimetro não pode ser menor ou igual a ${horimetroAtualBanco === 0 ? equipamentoBancoObject.horimetro :  horimetroAtualBanco}`,
+        };
+      }
     }
 
-    if (kwhAtualRecebido && kwhAtualRecebido <= kwhAtualCadastrado!) {
-      return {
-        status: StatusCodes.BAD_REQUEST,
-        message: `O KWH atual é menor ou igual que o KWH cadastrado, ${ResultEquipamento.KWH_atual!}`,
-      };
+    if (kwhAtualRecebido) {
+      if (kwhAtualRecebido <= kwhAtualBanco || kwhAtualRecebido <= equipamentoBancoObject.KWH!) {      
+        return {
+          status: StatusCodes.BAD_REQUEST,
+          message: `O valor do kwh não pode ser menor ou igual a ${kwhAtualBanco === 0 ? equipamentoBancoObject.KWH :  kwhAtualBanco}`,
+        };
+      }
     }
-    
-    // Atualização no BD
+
+    const {equipamento, ...equipamentoParcial}: IEquipamentoProps = resultEquipamento;
+    // Atualizando o objeto `equipamento`
+    const equipamentoAtualizado = {
+      ...equipamentoParcial, // Convertido para JSON antes de salvar no banco
+      horimetro_atual: horimetroAtualRecebido || horimetroAtualBanco,
+      KWH_atual: kwhAtualRecebido || kwhAtualBanco,
+    };
+
+    // Atualização no banco de dados
     const result = await knex(ETableName.equipamento)
-      .update({...equipamento, equipamento:equipamentoStringfy})
+      .update({...equipamentoAtualizado, equipamento: JSON.stringify({
+        ...equipamentoBancoObject,
+        horimetro: horimetroAntigo === 0 ? equipamentoBancoObject.horimetro : horimetroAntigo,
+        KWH: kwhAntigo === 0 ? equipamentoBancoObject.KWH : kwhAntigo,
+      }) as IEquipamento})
       .where('id', id);
 
     if (!result) {
@@ -61,18 +75,18 @@ export const updateById = async (id: number, equipamento: IEquipamentoProps): Pr
         status: StatusCodes.NOT_FOUND,
         message: 'Registro não localizado',
       };
-    } else {
-      return {
-        status: StatusCodes.OK,
-        message: 'Registro atualizado com sucesso',
-      };
     }
+
+    return {
+      status: StatusCodes.OK,
+      message: 'Registro atualizado com sucesso',
+    };
   } catch (error) {
-    console.log(error);   
-    
+    console.error(error);
+
     return {
       status: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: 'Não foi possível atualizar o registro'
+      message: 'Não foi possível atualizar o registro',
     };
   }
 };
