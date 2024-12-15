@@ -25,7 +25,7 @@ export const verify = (token: string): IJwt | 'JWT_SECRET_NOT_FOUND' | 'INVALID_
 
   } catch (error) {
     return 'INVALID_TOKEN';
-  }
+      }
 };
 
 export const JWTService = {

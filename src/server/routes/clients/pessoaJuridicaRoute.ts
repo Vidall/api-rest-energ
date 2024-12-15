@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { pessoaJuridicaControllers } from '../../controllers/clients/pessoaJuridica';
+import { ensureAuthenticated } from '../../shared/middlewares/EnsureAuthenticated';
 
 export const pessoaJuridica = (router: Router) => {
   const routers = [

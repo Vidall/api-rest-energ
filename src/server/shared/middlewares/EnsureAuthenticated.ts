@@ -28,14 +28,20 @@ export const ensureAuthenticated: RequestHandler = (req, res, next) => {
   if (jwtData === 'JWT_SECRET_NOT_FOUND'){
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       errors: {
-        default: 'Erro ao verificar o token',
-      },
+        default: 'Erro ao verificar o token'
+      }
+    });
+  } else if (jwtData === 'INVALID_TOKEN') {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      errors: {
+        default: 'Não autorizado'
+      }
     });
   }
-
+  
   req.headers.IdUsuario = jwtData.Uid?.toString();
   req.headers.admin = jwtData.admin?.toString();
 
   return next();
 
-}; 
+};

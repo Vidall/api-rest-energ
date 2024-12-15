@@ -19,21 +19,32 @@ export const updateById = async (id: number, equipamento: IEquipamentoProps): Pr
       };
     }
     
-    // Logica de se o horimetro atual for 0 então continua com o horimetro antigo no cadastro
-    const HorimetroAtual = ResultEquipamento.horimetro_atual === 0 ? +(equipamento.equipamento.horimetro ?? 0) : +(ResultEquipamento.horimetro_atual ?? 0);
-    const KWHAtual = ResultEquipamento.KWH_atual === 0 ? +(equipamento.equipamento.KWH ?? 0) : +(ResultEquipamento.KWH_atual ?? 0);
+    const horimetroAtualRecebido = equipamento.horimetro_atual;
+    const kwhAtualRecebido = equipamento.KWH_atual;
+
+    const horimetroAtualCadastrado = ResultEquipamento.horimetro_atual;
+    const kwhAtualCadastrado = ResultEquipamento.KWH_atual
+
+    const equipamentoCliente: IEquipamento = equipamento.equipamento
+    let equipamentoStringfy: IEquipamento = equipamentoCliente;
 
     // Equipamento para stringfy
-    const equipamentoStringfy: IEquipamento = JSON.stringify({...equipamento.equipamento, horimetro: HorimetroAtual, KWH: KWHAtual}) as IEquipamento;
+    if (horimetroAtualRecebido && horimetroAtualRecebido !== horimetroAtualCadastrado) {
+      equipamentoStringfy = JSON.stringify({...ResultEquipamento.equipamento, horimetro: horimetroAtualCadastrado} as IEquipamento) as IEquipamento;
+  
+    } else if(kwhAtualRecebido && kwhAtualRecebido !== kwhAtualCadastrado) {
+      equipamentoStringfy = JSON.stringify({...ResultEquipamento.equipamento, KWH: kwhAtualCadastrado }as IEquipamento) as IEquipamento;
+  
+    }
     
-    if (equipamento.horimetro_atual! <= ResultEquipamento.horimetro_atual!) {
+    if (horimetroAtualRecebido && horimetroAtualRecebido <= horimetroAtualCadastrado!) {
       return {
         status: StatusCodes.BAD_REQUEST,
         message: `O horimetro atual é menor ou igual que o horimetro cadastrado, ${ResultEquipamento.horimetro_atual!}`,
       };
     }
 
-    if (equipamento.KWH_atual! <= ResultEquipamento.KWH_atual!) {
+    if (kwhAtualRecebido && kwhAtualRecebido <= kwhAtualCadastrado!) {
       return {
         status: StatusCodes.BAD_REQUEST,
         message: `O KWH atual é menor ou igual que o KWH cadastrado, ${ResultEquipamento.KWH_atual!}`,

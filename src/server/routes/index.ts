@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { routesClientes } from '../routes/clients';
 import { routesTecnicos } from '../routes/tecnicos';
 import { routesEquipamento } from './clients/equipamentoRoutes';
+import { ensureAuthenticated } from '../shared/middlewares/EnsureAuthenticated';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/',(req, res) => {
   res.send('Tudo ok');
 });
 
